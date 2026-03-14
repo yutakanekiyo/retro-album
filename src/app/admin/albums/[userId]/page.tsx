@@ -118,7 +118,6 @@ export default async function AlbumManagePage({ params }: Props) {
               albumId={album.id}
               userId={userId}
               nextSortOrder={nextSortOrder}
-              onUploaded={() => {}}
             />
           </section>
 

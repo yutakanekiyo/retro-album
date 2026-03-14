@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { getSignedUploadUrl, saveAlbumItem } from '@/app/admin/actions'
 
 type UploadFile = {
@@ -17,10 +18,10 @@ type Props = {
   albumId: string
   userId: string
   nextSortOrder: number
-  onUploaded: () => void
 }
 
-export default function PhotoUploader({ albumId, userId, nextSortOrder, onUploaded }: Props) {
+export default function PhotoUploader({ albumId, userId, nextSortOrder }: Props) {
+  const router = useRouter()
   const [files, setFiles] = useState<UploadFile[]>([])
   const [dragOver, setDragOver] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -111,7 +112,7 @@ export default function PhotoUploader({ albumId, userId, nextSortOrder, onUpload
     }
 
     setUploading(false)
-    onUploaded()
+    router.refresh()
     // 完了したファイルをクリア
     setTimeout(() => {
       setFiles((prev) => prev.filter((f) => f.status !== 'done'))
