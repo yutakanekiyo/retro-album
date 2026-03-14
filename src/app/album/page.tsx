@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import AlbumViewer, { type AlbumItem } from '@/components/AlbumViewer'
 import LogoutButton from '@/components/LogoutButton'
 import PageTransition from '@/components/PageTransition'
+import BgmPlayer from '@/components/BgmPlayer'
 
 type RawAlbumItem = {
   id: string
@@ -40,6 +41,15 @@ export default async function AlbumPage() {
   } | null
 
   const displayName = profile?.display_name ?? user.email ?? 'ゲスト'
+
+  // BGM 署名付きURL生成
+  let bgmSignedUrl: string | null = null
+  if (album?.bgm_url) {
+    const { data: bgmData } = await supabase.storage
+      .from('bgm')
+      .createSignedUrl(album.bgm_url, 7200)
+    bgmSignedUrl = bgmData?.signedUrl ?? null
+  }
 
   // アルバムアイテム取得 & 署名付きURL生成
   let items: AlbumItem[] = []
@@ -101,6 +111,7 @@ export default async function AlbumPage() {
             )}
           </div>
           <div className="flex items-center gap-3">
+            {bgmSignedUrl && <BgmPlayer src={bgmSignedUrl} />}
             <span className="hidden font-elite text-[11px] text-[#8b6340] sm:block">
               {displayName}
             </span>

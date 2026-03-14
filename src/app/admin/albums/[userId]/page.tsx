@@ -5,6 +5,7 @@ import CreateAlbumForm from '@/components/admin/CreateAlbumForm'
 import PhotoUploader from '@/components/admin/PhotoUploader'
 import AlbumItemList from '@/components/admin/AlbumItemList'
 import AlbumEditForm from '@/components/admin/AlbumEditForm'
+import BgmUploader from '@/components/admin/BgmUploader'
 
 type RawItem = {
   id: string
@@ -104,6 +105,12 @@ export default async function AlbumManagePage({ params }: Props) {
           <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-3">
             <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">アルバム情報</h2>
             <AlbumEditForm album={album} />
+          </section>
+
+          {/* BGM */}
+          <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-3">
+            <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">BGM</h2>
+            <BgmUploader albumId={album.id} currentBgmPath={album.bgm_url} />
           </section>
 
           {/* 写真アップロード */}

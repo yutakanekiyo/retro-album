@@ -283,14 +283,42 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
 
 // 動画スライド
 function VideoSlide({ src }: { src: string }) {
+  const [started, setStarted] = useState(false)
+
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black">
+      {/* フィルムグレインオーバーレイ */}
+      <div className="pointer-events-none absolute inset-0 z-10 photo-grain" />
+
       <video
         src={src}
-        controls
+        controls={started}
         playsInline
         className="max-h-full max-w-full"
+        style={{ filter: 'sepia(10%) contrast(1.05)' }}
+        onPlay={() => setStarted(true)}
       />
+
+      {/* カスタム再生ボタン（再生前） */}
+      {!started && (
+        <button
+          onClick={() => {
+            setStarted(true)
+            const video = document.querySelector(`video[src="${src}"]`) as HTMLVideoElement
+            video?.play()
+          }}
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/20"
+        >
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#d4843a]/70 bg-black/50 text-[#d4843a] shadow-[0_0_20px_rgba(212,132,58,0.3)] transition-transform hover:scale-105">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="currentColor">
+              <polygon points="0,0 20,11 0,22" />
+            </svg>
+          </div>
+          <span className="font-elite text-[11px] tracking-[0.3em] text-[#d4843a]/80 uppercase">
+            Play
+          </span>
+        </button>
+      )}
     </div>
   )
 }
