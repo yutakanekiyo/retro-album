@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Noto_Serif_JP } from 'next/font/google'
+import { Noto_Serif_JP, Special_Elite } from 'next/font/google'
 import './globals.css'
 
 const notoSerifJP = Noto_Serif_JP({
   subsets: ['latin'],
   weight: ['400', '600', '700'],
   variable: '--font-noto-serif',
+  display: 'swap',
+})
+
+const specialElite = Special_Elite({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-special-elite',
   display: 'swap',
 })
 
@@ -34,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSerifJP.variable} film-grain vignette`}>
+      <body className={`${notoSerifJP.variable} ${specialElite.variable} film-grain vignette`}>
         {children}
       </body>
     </html>

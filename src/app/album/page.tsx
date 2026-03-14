@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import AlbumViewer, { type AlbumItem } from '@/components/AlbumViewer'
 import LogoutButton from '@/components/LogoutButton'
+import PageTransition from '@/components/PageTransition'
 
 type RawAlbumItem = {
   id: string
@@ -81,30 +82,43 @@ export default async function AlbumPage() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-[#1a1208]">
-      {/* ヘッダー */}
-      <header className="flex shrink-0 items-center justify-between border-b border-[#8b6340]/20 px-5 py-3">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">🎞️</span>
-          <span className="text-sm font-semibold tracking-widest text-[#f5e6d0] uppercase">
-            {album?.title ?? 'Retro Album'}
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="hidden text-xs text-[#8b6340] sm:block">{displayName}</span>
-          <LogoutButton />
-        </div>
-      </header>
+    <PageTransition>
+      <div className="flex h-dvh flex-col bg-[#0f0a04]">
+        {/* ヘッダー */}
+        <header className="flex shrink-0 items-center justify-between bg-[#0a0604] border-b border-[#8b6340]/20 px-5 py-2.5">
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">🎞️</span>
+            <span className="font-elite text-sm tracking-[0.2em] text-[#d4843a]">
+              RETRO ALBUM
+            </span>
+            {album?.title && (
+              <>
+                <span className="text-[#8b6340]/40">·</span>
+                <span className="hidden text-xs text-[#8b6340] sm:block truncate max-w-[160px]">
+                  {album.title}
+                </span>
+              </>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="hidden font-elite text-[11px] text-[#8b6340] sm:block">
+              {displayName}
+            </span>
+            <LogoutButton />
+          </div>
+        </header>
 
-      {/* アルバムビューア or 空状態 */}
-      {album ? (
-        <AlbumViewer items={items} />
-      ) : (
-        <div className="flex flex-1 flex-col items-center justify-center gap-3">
-          <p className="text-[#f5e6d0]">ようこそ、{displayName} さん</p>
-          <p className="text-xs text-[#8b6340]">アルバムはまだ準備されていません</p>
-        </div>
-      )}
-    </div>
+        {/* アルバムビューア or 空状態 */}
+        {album ? (
+          <AlbumViewer items={items} />
+        ) : (
+          <div className="flex flex-1 flex-col items-center justify-center gap-4">
+            <p className="font-elite text-lg tracking-widest text-[#d4843a]">NO ALBUM</p>
+            <p className="text-xs text-[#8b6340]">ようこそ、{displayName} さん</p>
+            <p className="text-xs text-[#8b6340]/60">アルバムはまだ準備されていません</p>
+          </div>
+        )}
+      </div>
+    </PageTransition>
   )
 }

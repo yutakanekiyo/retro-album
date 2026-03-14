@@ -22,15 +22,29 @@ const slideVariants = {
   enter: (dir: number) => ({
     x: dir > 0 ? '100%' : '-100%',
     opacity: 0,
+    filter: 'brightness(0.6)',
   }),
   center: {
     x: 0,
     opacity: 1,
+    filter: 'brightness(1)',
   },
   exit: (dir: number) => ({
     x: dir < 0 ? '100%' : '-100%',
     opacity: 0,
+    filter: 'brightness(0.6)',
   }),
+}
+
+// パーフォレーションストリップ
+function PerfStrip() {
+  return (
+    <div className="perf-strip w-full">
+      {Array.from({ length: 60 }).map((_, i) => (
+        <div key={i} className="perf-hole" />
+      ))}
+    </div>
+  )
 }
 
 export default function AlbumViewer({ items }: Props) {
@@ -47,7 +61,6 @@ export default function AlbumViewer({ items }: Props) {
     [currentIndex, items.length]
   )
 
-  // キーボードナビゲーション
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (viewMode !== 'slide') return
@@ -61,29 +74,33 @@ export default function AlbumViewer({ items }: Props) {
   if (items.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <p className="text-sm text-[#8b6340]">写真がまだありません</p>
+        <p className="film-counter">— NO PHOTOS —</p>
       </div>
     )
   }
 
   const item = items[currentIndex]
 
-  // ドットインジケーター用（最大9つ表示）
+  // カウンター表示 "001 / 036"
+  const counterStr = `${String(currentIndex + 1).padStart(3, '0')} / ${String(items.length).padStart(3, '0')}`
+
+  // ドットインジケーター（最大9）
   const dotStart = Math.max(0, Math.min(currentIndex - 4, items.length - 9))
   const dotItems = items.slice(dotStart, dotStart + 9)
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
+      {/* 上部パーフォレーション */}
+      <PerfStrip />
+
       {/* ツールバー */}
-      <div className="flex items-center justify-between border-b border-[#8b6340]/20 px-4 py-2">
-        <span className="text-xs tabular-nums text-[#8b6340]">
-          {currentIndex + 1} / {items.length}
-        </span>
+      <div className="flex items-center justify-between bg-[#0f0a04] px-4 py-1.5">
+        <span className="film-counter">{counterStr}</span>
         <button
           onClick={() => setViewMode(viewMode === 'slide' ? 'grid' : 'slide')}
-          className="text-xs text-[#8b6340] hover:text-[#d4843a] transition-colors tracking-widest"
+          className="font-elite text-[11px] tracking-[0.2em] text-[#8b6340] hover:text-[#d4843a] transition-colors uppercase"
         >
-          {viewMode === 'slide' ? '一覧表示' : '戻る'}
+          {viewMode === 'slide' ? '[ Grid ]' : '[ Film ]'}
         </button>
       </div>
 
@@ -108,10 +125,10 @@ export default function AlbumViewer({ items }: Props) {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ type: 'tween', ease: 'easeInOut', duration: 0.28 }}
+                transition={{ type: 'tween', ease: 'easeInOut', duration: 0.3 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.15}
+                dragElastic={0.12}
                 onDragEnd={(_, info) => {
                   if (info.offset.x < -50) navigate(currentIndex + 1)
                   else if (info.offset.x > 50) navigate(currentIndex - 1)
@@ -126,11 +143,11 @@ export default function AlbumViewer({ items }: Props) {
               </motion.div>
             </AnimatePresence>
 
-            {/* 左右ボタン（タブレット・PC用） */}
+            {/* 左右ナビ（タブレット・PC） */}
             {currentIndex > 0 && (
               <button
                 onClick={() => navigate(currentIndex - 1)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white text-xl hover:bg-black/70 transition-colors select-none"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-[#f5e6d0]/70 text-2xl hover:bg-black/60 hover:text-[#f5e6d0] transition-all select-none"
               >
                 ‹
               </button>
@@ -138,46 +155,52 @@ export default function AlbumViewer({ items }: Props) {
             {currentIndex < items.length - 1 && (
               <button
                 onClick={() => navigate(currentIndex + 1)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white text-xl hover:bg-black/70 transition-colors select-none"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-[#f5e6d0]/70 text-2xl hover:bg-black/60 hover:text-[#f5e6d0] transition-all select-none"
               >
                 ›
               </button>
             )}
           </div>
 
-          {/* キャプション */}
-          <div className="min-h-[2.5rem] px-6 py-2 text-center">
-            {item.caption && (
-              <p className="text-sm text-[#f5e6d0]/80 leading-relaxed">{item.caption}</p>
+          {/* 下部パーフォレーション */}
+          <PerfStrip />
+
+          {/* キャプション・インジケーター */}
+          <div className="bg-[#0f0a04] px-4 py-2">
+            {/* キャプション（フィルム日付スタンプ風） */}
+            <div className="mb-2 min-h-[1.4rem] text-center">
+              {item.caption && (
+                <p className="film-caption">{item.caption}</p>
+              )}
+            </div>
+
+            {/* ドットインジケーター */}
+            {items.length > 1 && (
+              <div className="flex justify-center gap-1.5">
+                {dotItems.map((_, i) => {
+                  const idx = dotStart + i
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => navigate(idx)}
+                      className={`rounded-full transition-all duration-200 ${
+                        idx === currentIndex
+                          ? 'h-1.5 w-5 bg-[#d4843a]'
+                          : 'h-1.5 w-1.5 bg-[#8b6340]/40 hover:bg-[#8b6340]'
+                      }`}
+                    />
+                  )
+                })}
+              </div>
             )}
           </div>
-
-          {/* ドットインジケーター */}
-          {items.length > 1 && (
-            <div className="flex justify-center gap-1.5 pb-4">
-              {dotItems.map((_, i) => {
-                const idx = dotStart + i
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => navigate(idx)}
-                    className={`rounded-full transition-all duration-200 ${
-                      idx === currentIndex
-                        ? 'h-1.5 w-4 bg-[#d4843a]'
-                        : 'h-1.5 w-1.5 bg-[#8b6340]/50'
-                    }`}
-                  />
-                )
-              })}
-            </div>
-          )}
         </>
       )}
     </div>
   )
 }
 
-// 写真スライド（ピンチズーム・ダブルタップズーム対応）
+// 写真スライド（フィルムフィルター + ピンチ/ダブルタップズーム）
 function PhotoSlide({ src, alt }: { src: string; alt: string }) {
   const scale = useMotionValue(1)
   const x = useMotionValue(0)
@@ -185,8 +208,6 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
   const lastScale = useRef(1)
   const lastDistance = useRef<number | null>(null)
   const lastTap = useRef(0)
-  const originX = useRef(0)
-  const originY = useRef(0)
 
   function getDistance(touches: React.TouchList) {
     const dx = touches[0].clientX - touches[1].clientX
@@ -197,8 +218,6 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
   function handleTouchStart(e: React.TouchEvent) {
     if (e.touches.length === 2) {
       lastDistance.current = getDistance(e.touches)
-      originX.current = (e.touches[0].clientX + e.touches[1].clientX) / 2
-      originY.current = (e.touches[0].clientY + e.touches[1].clientY) / 2
     }
   }
 
@@ -216,7 +235,6 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
   function handleTouchEnd() {
     lastScale.current = scale.get()
     lastDistance.current = null
-    // ズームアウトしきったらリセット
     if (scale.get() < 1.05) {
       animate(scale, 1, { type: 'spring', stiffness: 400, damping: 30 })
       animate(x, 0, { type: 'spring', stiffness: 400, damping: 30 })
@@ -225,10 +243,9 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
     }
   }
 
-  function handleClick(e: React.MouseEvent) {
+  function handleClick() {
     const now = Date.now()
     if (now - lastTap.current < 300) {
-      // ダブルタップ: ズームトグル
       if (scale.get() > 1) {
         animate(scale, 1, { type: 'spring', stiffness: 400, damping: 30 })
         animate(x, 0, { type: 'spring', stiffness: 400, damping: 30 })
@@ -245,7 +262,7 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
   return (
     <motion.div
       style={{ scale, x, y }}
-      className="absolute inset-0 flex items-center justify-center"
+      className="absolute inset-0 flex items-center justify-center photo-grain"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -255,7 +272,7 @@ function PhotoSlide({ src, alt }: { src: string; alt: string }) {
         src={src}
         alt={alt}
         fill
-        className="object-contain select-none"
+        className="object-contain select-none film-filter"
         priority
         sizes="100vw"
         draggable={false}
