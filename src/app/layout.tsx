@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Noto_Serif_JP, Special_Elite } from 'next/font/google'
 import './globals.css'
+import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
 
 const notoSerifJP = Noto_Serif_JP({
   subsets: ['latin'],
@@ -20,10 +21,30 @@ export const metadata: Metadata = {
   title: 'Retro Album',
   description: 'あなただけの思い出アルバム',
   manifest: '/manifest.json',
+  // iOS PWA
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'Retro Album',
+    startupImage: [
+      // iPhone 14 Pro Max
+      { url: '/apple-icon', media: '(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)' },
+      // iPhone 14 / 13 / 12
+      { url: '/apple-icon', media: '(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)' },
+    ],
+  },
+  // OGP
+  openGraph: {
+    title: 'Retro Album',
+    description: 'あなただけの思い出アルバム',
+    type: 'website',
+  },
+  // フォーマット検出をオフ（iOSが電話番号などを誤検知しないように）
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
   },
 }
 
@@ -31,7 +52,9 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  userScalable: false,
   themeColor: '#1a1208',
+  viewportFit: 'cover', // iPhone のノッチ・ホームバー対応
 }
 
 export default function RootLayout({
@@ -42,6 +65,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${notoSerifJP.variable} ${specialElite.variable} film-grain vignette`}>
+        <ServiceWorkerRegistration />
         {children}
       </body>
     </html>

@@ -2,24 +2,27 @@
   "name": "Retro Album",
   "short_name": "Retro Album",
   "description": "あなただけの思い出アルバム",
-  "start_url": "/",
+  "start_url": "/album",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#1a1208",
   "theme_color": "#1a1208",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
+  "lang": "ja",
+  "categories": ["photo", "entertainment"],
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
+      "src": "/icon",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon-512x512.png",
+      "src": "/apple-icon",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
