@@ -1,16 +1,23 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import AlbumViewer, { type AlbumItem } from '@/components/AlbumViewer'
 import LogoutButton from '@/components/LogoutButton'
+
+type RawAlbumItem = {
+  id: string
+  type: 'photo' | 'video'
+  file_url: string
+  thumbnail_url: string | null
+  caption: string | null
+  sort_order: number
+}
 
 export default async function AlbumPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
 
-  if (!user) {
-    redirect('/login')
-  }
-
-  // プロフィール情報を取得
+  // プロフィール取得
   const { data: profileData } = await supabase
     .from('profiles')
     .select('display_name, avatar_url')
@@ -18,59 +25,86 @@ export default async function AlbumPage() {
     .single()
   const profile = profileData as { display_name: string; avatar_url: string | null } | null
 
-  // このユーザーのアルバムを取得
+  // アルバム取得
   const { data: albumData } = await supabase
     .from('albums')
-    .select('id, title, description')
+    .select('id, title, description, bgm_url')
     .eq('user_id', user.id)
     .single()
-  const album = albumData as { id: string; title: string; description: string | null } | null
+  const album = albumData as {
+    id: string
+    title: string
+    description: string | null
+    bgm_url: string | null
+  } | null
 
   const displayName = profile?.display_name ?? user.email ?? 'ゲスト'
 
+  // アルバムアイテム取得 & 署名付きURL生成
+  let items: AlbumItem[] = []
+  if (album) {
+    const { data: rawItems } = await supabase
+      .from('album_items')
+      .select('id, type, file_url, thumbnail_url, caption, sort_order')
+      .eq('album_id', album.id)
+      .order('sort_order', { ascending: true })
+
+    if (rawItems && rawItems.length > 0) {
+      items = await Promise.all(
+        (rawItems as RawAlbumItem[]).map(async (item) => {
+          const bucket = item.type === 'photo' ? 'album-photos' : 'album-videos'
+
+          // 署名付きURL生成（1時間有効）
+          const { data: urlData } = await supabase.storage
+            .from(bucket)
+            .createSignedUrl(item.file_url, 3600)
+
+          let thumbnailUrl: string | null = null
+          if (item.thumbnail_url) {
+            const { data: thumbData } = await supabase.storage
+              .from(bucket)
+              .createSignedUrl(item.thumbnail_url, 3600)
+            thumbnailUrl = thumbData?.signedUrl ?? null
+          }
+
+          return {
+            id: item.id,
+            type: item.type,
+            signedUrl: urlData?.signedUrl ?? item.file_url,
+            thumbnailUrl,
+            caption: item.caption,
+            sort_order: item.sort_order,
+          }
+        })
+      )
+    }
+  }
+
   return (
-    <div className="flex min-h-screen flex-col bg-[#1a1208]">
+    <div className="flex h-dvh flex-col bg-[#1a1208]">
       {/* ヘッダー */}
-      <header className="flex items-center justify-between border-b border-[#8b6340]/20 px-6 py-4">
-        <div className="flex items-center gap-3">
-          <span className="text-xl">🎞️</span>
+      <header className="flex shrink-0 items-center justify-between border-b border-[#8b6340]/20 px-5 py-3">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">🎞️</span>
           <span className="text-sm font-semibold tracking-widest text-[#f5e6d0] uppercase">
-            Retro Album
+            {album?.title ?? 'Retro Album'}
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-xs text-[#8b6340]">{displayName}</span>
+          <span className="hidden text-xs text-[#8b6340] sm:block">{displayName}</span>
           <LogoutButton />
         </div>
       </header>
 
-      {/* メインコンテンツ */}
-      <main className="flex flex-1 flex-col items-center justify-center px-6">
-        {album ? (
-          <div className="text-center">
-            <p className="mb-2 text-xs tracking-[0.3em] text-[#8b6340] uppercase">
-              Album for
-            </p>
-            <h1 className="mb-1 text-3xl font-bold text-[#f5e6d0]">
-              {displayName}
-            </h1>
-            <p className="text-sm text-[#8b6340]">{album.title}</p>
-            {album.description && (
-              <p className="mt-3 text-xs text-[#8b6340]/70">{album.description}</p>
-            )}
-            <div className="mt-8 rounded-lg border border-[#8b6340]/30 bg-[#2d1a0a]/60 px-8 py-6 text-center text-[#f5e6d0]/50 text-sm">
-              アルバムビューアは Day 3 で実装予定
-            </div>
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="mb-4 text-[#f5e6d0]">ようこそ、{displayName} さん</p>
-            <p className="text-xs text-[#8b6340]">
-              アルバムはまだ準備されていません
-            </p>
-          </div>
-        )}
-      </main>
+      {/* アルバムビューア or 空状態 */}
+      {album ? (
+        <AlbumViewer items={items} />
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center gap-3">
+          <p className="text-[#f5e6d0]">ようこそ、{displayName} さん</p>
+          <p className="text-xs text-[#8b6340]">アルバムはまだ準備されていません</p>
+        </div>
+      )}
     </div>
   )
 }
