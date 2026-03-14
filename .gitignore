@@ -32,6 +32,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local.example
+
+# upload data (写真・動画は git 管理しない)
+/upload-data/
 
 # vercel
 .vercel
