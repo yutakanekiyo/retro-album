@@ -88,6 +88,28 @@ body {
 }
 
 /* フィルムパーフォレーション */
+/* 管理画面の共通入力スタイル */
+.admin-input {
+  width: 100%;
+  border-radius: 0.25rem;
+  background: #0f0a04;
+  border: 1px solid rgba(139, 99, 64, 0.4);
+  padding: 0.5rem 0.75rem;
+  color: #f5e6d0;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.admin-input:focus {
+  border-color: #d4843a;
+}
+.admin-input::placeholder {
+  color: rgba(139, 99, 64, 0.5);
+}
+.admin-input:disabled {
+  opacity: 0.5;
+}
+
 .perforation {
   background-image: repeating-linear-gradient(
     to bottom,
