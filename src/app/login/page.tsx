@@ -30,15 +30,15 @@ export default async function LoginPage() {
               {/* 上左 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 66, top: -16, left: -12, transform: 'rotate(-14deg)', zIndex: 0, opacity: 0.4 }} />
+                style={{ width: 66, top: -16, left: -12, transform: 'rotate(-14deg)', zIndex: 0 }} />
               {/* 上右 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 66, top: -16, right: -12, transform: 'rotate(16deg)', zIndex: 0, opacity: 0.4 }} />
+                style={{ width: 66, top: -16, right: -12, transform: 'rotate(16deg)', zIndex: 0 }} />
               {/* 下中央 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 62, bottom: -16, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0, opacity: 0.4 }} />
+                style={{ width: 62, bottom: -16, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
 
               <h1
                 className="font-display block relative"
@@ -48,7 +48,8 @@ export default async function LoginPage() {
                   letterSpacing: '0.02em',
                   fontWeight: 500,
                   zIndex: 1,
-                  textShadow: '0 0 12px rgba(242,242,247,0.9), 0 0 24px rgba(242,242,247,0.7)',
+                  WebkitTextStroke: '6px #F2F2F7',
+                  paintOrder: 'stroke fill',
                 }}
               >
                 Replay.
