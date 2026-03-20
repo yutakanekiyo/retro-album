@@ -32,10 +32,10 @@ export default async function LoginPage() {
                 aria-hidden
                 className="pointer-events-none absolute"
                 style={{
-                  width: 56,
-                  top: -28,
-                  right: -20,
-                  transform: 'rotate(12deg)',
+                  width: 72,
+                  top: -36,
+                  left: '50%',
+                  transform: 'translateX(-50%) rotate(12deg)',
                   zIndex: 10,
                 }}
               />
