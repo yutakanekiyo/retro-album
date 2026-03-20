@@ -30,15 +30,15 @@ export default async function LoginPage() {
               {/* 上左 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 66, top: -76, left: -12, transform: 'rotate(-14deg)', zIndex: 0 }} />
+                style={{ width: 96, top: -80, left: '15%', transform: 'translateX(-50%) rotate(-14deg)', zIndex: 0 }} />
               {/* 上右 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 66, top: -76, right: -12, transform: 'rotate(16deg)', zIndex: 0 }} />
+                style={{ width: 96, top: -80, left: '85%', transform: 'translateX(-50%) rotate(16deg)', zIndex: 0 }} />
               {/* 下中央 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 62, top: -8, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
+                style={{ width: 90, top: -14, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
 
               <h1
                 className="font-display block relative"
