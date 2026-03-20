@@ -160,28 +160,58 @@ export default function RecordSection({
           }} />
         </div>
 
-        {/* テキスト情報 */}
+        {/* テキスト情報 — グラスモーフィズムカード */}
         {(songTitle || songArtist) && (
-          <div className="text-center px-6" style={{ maxWidth: 300 }}>
+          <div
+            style={{
+              background: 'rgba(255, 255, 255, 0.25)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: 16,
+              padding: '20px 24px',
+              textAlign: 'center',
+              maxWidth: 280,
+              width: '80%',
+            }}
+          >
+            {/* キャプション */}
+            <p
+              className="font-ui"
+              style={{
+                fontSize: 12,
+                color: 'rgba(44, 36, 32, 0.6)',
+                letterSpacing: '0.12em',
+                marginBottom: 8,
+              }}
+            >
+              これは、あなたを表す一曲。
+            </p>
+            {/* 曲名 */}
             {songTitle && (
               <p
                 className="font-display"
                 style={{
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: 600,
                   color: '#2C2420',
                   letterSpacing: '0.02em',
-                  lineHeight: 1.2,
-                  textShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                  lineHeight: 1.3,
                 }}
               >
                 {songTitle}
               </p>
             )}
+            {/* アーティスト名 */}
             {songArtist && (
               <p
-                className="font-ui mt-1"
-                style={{ fontSize: 13, color: '#6B5E54', letterSpacing: '0.04em' }}
+                className="font-ui"
+                style={{
+                  fontSize: 13,
+                  color: 'rgba(44, 36, 32, 0.6)',
+                  letterSpacing: '0.04em',
+                  marginTop: 6,
+                }}
               >
                 {songArtist}
               </p>
