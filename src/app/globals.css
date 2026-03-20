@@ -21,14 +21,19 @@
   --foreground: #f5e6d0;
 
   /* Design System */
-  --bg-primary: #FAF6F0;
-  --bg-secondary: #F0EBE3;
-  --text-primary: #2C2420;
-  --text-secondary: #6B5E54;
-  --accent-primary: #B85C3C;
-  --accent-hover: #A04E30;
-  --border: #D9CFC4;
-  --gallery-bg: #1A1614;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F2F2F7;
+  --text-primary: #000000;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #AEAEB2;
+  --accent-primary: #007AFF;
+  --accent-hover: #0066DD;
+  --border: #E5E5EA;
+  --border-light: #F2F2F7;
+  --gallery-bg: #FFFFFF;
+  --gallery-text: #000000;
+  --gallery-text-sub: #8E8E93;
+  --gallery-border: #E5E5EA;
 }
 
 * {

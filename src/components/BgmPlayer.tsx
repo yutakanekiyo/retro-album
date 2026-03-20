@@ -73,8 +73,8 @@ export default function BgmPlayer({ src, isDark = false, onPlayingChange }: Prop
         className={`w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-sm border transition-colors ${playing ? 'bgm-playing' : ''}`}
         style={{
           background: isDark ? 'rgba(44,36,32,0.6)' : 'rgba(255,255,255,0.7)',
-          color: isDark ? '#F0EBE3' : '#2C2420',
-          borderColor: isDark ? '#3D3530' : '#D9CFC4',
+          color: isDark ? '#F0EBE3' : '#000000',
+          borderColor: isDark ? '#3D3530' : '#E5E5EA',
           opacity: playing ? 1 : 0.45,
         }}
       >

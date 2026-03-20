@@ -10,13 +10,13 @@ type Props = {
 
 export default function GalleryView({ items, onPhotoClick }: Props) {
   return (
-    <div className="flex-1 overflow-y-auto bg-[#1A1614]">
+    <div className="flex-1 overflow-y-auto bg-white">
       <div className="grid grid-cols-3 gap-0.5">
         {items.map((item, index) => (
           <button
             key={item.id}
             onClick={() => onPhotoClick(index)}
-            className="relative aspect-square overflow-hidden bg-[#1A1614] focus:outline-none"
+            className="relative aspect-square overflow-hidden bg-[#F2F2F7] focus:outline-none"
           >
             <Image
               src={item.thumbnailUrl ?? item.signedUrl}

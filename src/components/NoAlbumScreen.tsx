@@ -14,18 +14,18 @@ export default function NoAlbumScreen({ displayName }: { displayName: string }) 
   }
 
   return (
-    <div className="flex h-dvh flex-col" style={{ background: '#FAF6F0' }}>
+    <div className="flex h-dvh flex-col" style={{ background: '#FFFFFF' }}>
       {/* ヘッダー */}
-      <div className="bg-white/60 backdrop-blur-md border-b border-[#D9CFC4]"
+      <div className="bg-white/80 backdrop-blur-md border-b border-[#E5E5EA]"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="flex h-12 items-center justify-between px-3">
           <button
             onClick={handleLogout}
-            className="font-ui text-xs px-3 py-1.5 rounded-full border border-[#D9CFC4] bg-white/70 text-[#6B5E54] hover:border-[#B85C3C] hover:text-[#B85C3C] transition-colors"
+            className="font-ui text-xs px-3 py-1.5 rounded-full border border-[#E5E5EA] bg-white text-[#8E8E93] hover:border-[#007AFF] hover:text-[#007AFF] transition-colors"
           >
             ログアウト
           </button>
-          <span className="font-display" style={{ fontSize: 17, color: '#2C2420', fontWeight: 600 }}>
+          <span className="font-display" style={{ fontSize: 17, color: '#000000', fontWeight: 600 }}>
             {displayName}
           </span>
           <div className="w-16" />

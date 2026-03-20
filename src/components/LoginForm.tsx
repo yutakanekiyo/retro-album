@@ -52,7 +52,7 @@ export default function LoginForm() {
       <div>
         <label
           className="font-ui block mb-1.5 uppercase tracking-wider"
-          style={{ fontSize: 11, color: '#9C8E82' }}
+          style={{ fontSize: 11, color: '#8E8E93' }}
         >
           ユーザー名 / メールアドレス
         </label>
@@ -66,15 +66,15 @@ export default function LoginForm() {
           className="w-full focus:outline-none transition-colors"
           style={{
             background: 'rgba(255,255,255,0.7)',
-            border: '1px solid #D9CFC4',
+            border: '1px solid #E5E5EA',
             borderRadius: 12,
             padding: '14px 16px',
             minHeight: 48,
-            color: '#2C2420',
+            color: '#000000',
             fontSize: 14,
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#B85C3C' }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '#D9CFC4' }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
         />
       </div>
 
@@ -82,7 +82,7 @@ export default function LoginForm() {
       <div>
         <label
           className="font-ui block mb-1.5 uppercase tracking-wider"
-          style={{ fontSize: 11, color: '#9C8E82' }}
+          style={{ fontSize: 11, color: '#8E8E93' }}
         >
           パスワード
         </label>
@@ -96,15 +96,15 @@ export default function LoginForm() {
           className="w-full focus:outline-none transition-colors"
           style={{
             background: 'rgba(255,255,255,0.7)',
-            border: '1px solid #D9CFC4',
+            border: '1px solid #E5E5EA',
             borderRadius: 12,
             padding: '14px 16px',
             minHeight: 48,
-            color: '#2C2420',
+            color: '#000000',
             fontSize: 14,
           }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#B85C3C' }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '#D9CFC4' }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
         />
       </div>
 
@@ -124,16 +124,16 @@ export default function LoginForm() {
         disabled={loading}
         className="w-full transition-colors active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         style={{
-          background: '#B85C3C',
-          color: '#FAF6F0',
+          background: '#007AFF',
+          color: '#FFFFFF',
           borderRadius: 12,
           minHeight: 48,
           fontWeight: 500,
           fontSize: 14,
           border: 'none',
         }}
-        onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = '#A04E30' }}
-        onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = '#B85C3C' }}
+        onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = '#0066DD' }}
+        onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = '#007AFF' }}
       >
         {loading ? '読み込み中...' : 'アルバムを開く'}
       </button>

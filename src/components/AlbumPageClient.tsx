@@ -69,16 +69,12 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
   return (
     <div
       className="flex h-dvh flex-col transition-colors duration-300"
-      style={{ background: isDark ? '#1A1614' : '#FAF6F0' }}
+      style={{ background: '#FFFFFF' }}
     >
       {/* ヘッダー */}
       <div
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
-        className={
-          isDark
-            ? 'bg-[#1A1614]/80 backdrop-blur-md border-b border-[#3D3530]'
-            : 'bg-white/60 backdrop-blur-md border-b border-[#D9CFC4]'
-        }
+        className="bg-white/80 backdrop-blur-md border-b border-[#E5E5EA]"
       >
         <div className="flex h-12 items-center justify-between px-3">
           {/* 左: ログアウト */}
@@ -86,11 +82,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
             onClick={handleLogout}
             aria-label="ログアウト"
             className="w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-sm border transition-colors"
-            style={
-              isDark
-                ? { background: 'rgba(44,36,32,0.6)', color: '#F0EBE3', borderColor: '#3D3530' }
-                : { background: 'rgba(255,255,255,0.7)', color: '#2C2420', borderColor: '#D9CFC4' }
-            }
+            style={{ background: 'rgba(255,255,255,0.7)', color: '#000000', borderColor: '#E5E5EA' }}
           >
             <BackIcon />
           </button>
@@ -100,7 +92,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
             className="font-display"
             style={{
               fontSize: 17,
-              color: isDark ? '#F0EBE3' : '#2C2420',
+              color: '#000000',
               fontWeight: 600,
             }}
           >
@@ -116,11 +108,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
               onClick={() => setViewMode(v => v === 'scrapbook' ? 'gallery' : 'scrapbook')}
               aria-label={viewMode === 'scrapbook' ? 'ギャラリー表示' : 'スクラップブック表示'}
               className="w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-sm border transition-colors"
-              style={
-                isDark
-                  ? { background: 'rgba(44,36,32,0.6)', color: '#F0EBE3', borderColor: '#3D3530' }
-                  : { background: 'rgba(255,255,255,0.7)', color: '#2C2420', borderColor: '#D9CFC4' }
-              }
+              style={{ background: 'rgba(255,255,255,0.7)', color: '#000000', borderColor: '#E5E5EA' }}
             >
               {viewMode === 'scrapbook' ? <GridIcon /> : <CollageIcon />}
             </button>
@@ -134,7 +122,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
           <div className="flex h-full items-center justify-center">
             <p
               className="font-ui text-sm"
-              style={{ color: isDark ? '#6B5E54' : '#9C8E82' }}
+              style={{ color: '#8E8E93' }}
             >
               — まだ写真がありません —
             </p>

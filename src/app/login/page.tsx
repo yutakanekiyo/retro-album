@@ -12,7 +12,7 @@ export default async function LoginPage() {
     <PageTransition>
       <div
         className="relative flex min-h-dvh flex-col items-center justify-center px-6 overflow-hidden"
-        style={{ background: '#FAF6F0' }}
+        style={{ background: '#FFFFFF' }}
       >
         {/* 背景テクスチャ */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -61,7 +61,7 @@ export default async function LoginPage() {
               className="font-display inline-block"
               style={{
                 fontSize: 32,
-                color: '#2C2420',
+                color: '#000000',
                 letterSpacing: '0.08em',
                 fontWeight: 600,
               }}
@@ -72,7 +72,7 @@ export default async function LoginPage() {
               className="font-caveat inline-block"
               style={{
                 fontSize: 16,
-                color: '#6B5E54',
+                color: '#8E8E93',
                 transform: 'rotate(-2deg)',
                 marginLeft: 8,
               }}
@@ -83,7 +83,7 @@ export default async function LoginPage() {
             {/* 区切り線 */}
             <div
               className="mx-auto mt-4"
-              style={{ height: 1, background: '#D9CFC4', maxWidth: 200 }}
+              style={{ height: 1, background: '#E5E5EA', maxWidth: 200 }}
             />
           </div>
 

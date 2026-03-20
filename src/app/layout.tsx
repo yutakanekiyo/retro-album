@@ -68,7 +68,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#FAF6F0',
+  themeColor: '#FFFFFF',
   viewportFit: 'cover', // iPhone のノッチ・ホームバー対応
 }
 
