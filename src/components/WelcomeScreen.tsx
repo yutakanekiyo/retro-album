@@ -53,71 +53,80 @@ export default function WelcomeScreen({ displayName, preloadUrls, onOpen }: Prop
         alignItems: 'center', justifyContent: 'center',
       }}
     >
-      {/* ブランド名 */}
+      {/* Replay. */}
       <p
         className="font-display"
-        style={{ fontSize: 18, color: '#C7C7CC', letterSpacing: '0.08em', marginBottom: 48 }}
+        style={{ fontSize: 22, fontWeight: 500, color: '#000000', letterSpacing: '0.02em', marginBottom: 32 }}
       >
         Replay.
       </p>
 
-      {/* 宛先 */}
-      <div style={{ textAlign: 'center', padding: '0 40px' }}>
-        <p className="font-ui" style={{ fontSize: 15, color: '#8E8E93', marginBottom: 14 }}>
-          このアルバムは
+      {/* メインテキスト */}
+      <div className="font-ui" style={{ textAlign: 'center', padding: '0 40px', lineHeight: 1.85 }}>
+        <p style={{ fontSize: 16, color: '#000000' }}>
+          このアルバムは、<strong style={{ fontWeight: 700 }}>{displayName}</strong>への贈り物。
         </p>
-        <h1
-          className="font-ui"
-          style={{
-            fontSize: 44, fontWeight: 700,
-            color: '#000000', lineHeight: 1.2,
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {displayName}
-        </h1>
-        <p className="font-ui" style={{ fontSize: 15, color: '#8E8E93', marginTop: 14 }}>
-          へ贈られました
+
+        <p style={{ fontSize: 16, color: '#000000', marginTop: 24 }}>
+          僕らに、青春を、感動を、アンフィを<br />
+          教えてくれた22。<br />
+          23が、そんな{displayName}や22の<br />
+          みんなと過ごした時間を、<br />
+          ここに詰め込みました。
+        </p>
+
+        <p style={{ fontSize: 16, color: '#000000', marginTop: 24 }}>
+          最高の先輩に、<br />
+          最高の友達に、<br />
+          最高の思い出を。
+        </p>
+
+        <p style={{ fontSize: 16, fontWeight: 700, color: '#000000', marginTop: 24 }}>
+          さあ、あの頃に戻ろう。
         </p>
       </div>
 
-      {/* Volume Up ヒント */}
+      {/* スピーカーアイコン + Volume UP */}
       <motion.div
-        style={{ marginTop: 64, textAlign: 'center' }}
-        animate={{ opacity: [0.4, 0.9, 0.4] }}
+        style={{ marginTop: 36, textAlign: 'center' }}
+        animate={{ opacity: [0.3, 1, 0.3] }}
         transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
       >
         <SpeakerIcon />
-        <p className="font-ui" style={{ fontSize: 13, color: '#AEAEB2', marginTop: 10, letterSpacing: '0.04em' }}>
-          Volume Up &amp; Scroll
+        <p className="font-ui" style={{ fontSize: 11, color: '#000000', marginTop: 6, letterSpacing: '0.06em' }}>
+          Volume UP
         </p>
       </motion.div>
 
       {/* 開くボタン */}
       <AnimatePresence>
         {ready && (
-          <motion.button
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            onClick={onOpen}
-            className="font-ui"
-            style={{
-              position: 'fixed',
-              bottom: 'calc(env(safe-area-inset-bottom) + 44px)',
-              left: '50%', transform: 'translateX(-50%)',
-              background: '#6B5340',
-              color: '#FFFFFF',
-              borderRadius: 100,
-              padding: '16px 56px',
-              fontSize: 17, fontWeight: 600,
-              border: 'none', cursor: 'pointer',
-              boxShadow: '0 4px 20px rgba(107, 83, 64, 0.35)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            アルバムを開く
-          </motion.button>
+          <div style={{
+            position: 'absolute',
+            bottom: 'calc(env(safe-area-inset-bottom) + 44px)',
+            left: 0, right: 0,
+            display: 'flex', justifyContent: 'center',
+          }}>
+            <motion.button
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              onClick={onOpen}
+              className="font-ui"
+              style={{
+                background: '#6B5340',
+                color: '#FFFFFF',
+                borderRadius: 100,
+                padding: '16px 56px',
+                fontSize: 17, fontWeight: 600,
+                border: 'none', cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(107, 83, 64, 0.35)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              アルバムを開く
+            </motion.button>
+          </div>
         )}
       </AnimatePresence>
 
@@ -129,8 +138,9 @@ export default function WelcomeScreen({ displayName, preloadUrls, onOpen }: Prop
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             style={{
-              position: 'fixed',
+              position: 'absolute',
               bottom: 'calc(env(safe-area-inset-bottom) + 52px)',
+              left: '50%', transform: 'translateX(-50%)',
               display: 'flex', gap: 6,
             }}
           >
@@ -153,7 +163,7 @@ function SpeakerIcon() {
   return (
     <svg
       width="32" height="32" viewBox="0 0 24 24"
-      fill="none" stroke="#AEAEB2" strokeWidth="1.6"
+      fill="none" stroke="#000000" strokeWidth="1.6"
       strokeLinecap="round" strokeLinejoin="round"
       style={{ margin: '0 auto', display: 'block' }}
     >
