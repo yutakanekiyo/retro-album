@@ -10,6 +10,7 @@ import GalleryView from './GalleryView'
 import FullscreenViewer from './FullscreenViewer'
 import BgmPlayer from './BgmPlayer'
 import type { BgmPlayerHandle } from './BgmPlayer'
+import WelcomeScreen from './WelcomeScreen'
 import type { AlbumItem } from './AlbumViewer'
 
 type Props = {
@@ -85,9 +86,21 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
   const [fullscreenIndex, setFullscreenIndex] = useState<number | null>(null)
   const [bgmPlaying,     setBgmPlaying]     = useState(false)
   const [profileOpen,    setProfileOpen]    = useState(false)
+  const [welcomeDone,    setWelcomeDone]    = useState(false)
 
-  const initials  = getInitials(displayName)
+  const initials   = getInitials(displayName)
   const showChrome = fullscreenIndex === null
+
+  // ウェルカム画面用: 最初の15枚をプリロード
+  const preloadUrls = items
+    .slice(0, 15)
+    .map(item => item.thumbnailUrl ?? item.signedUrl)
+    .filter(Boolean) as string[]
+
+  function handleWelcomeOpen() {
+    bgmRef.current?.toggle()  // ボタンタップ = ユーザー操作 → BGM再生
+    setWelcomeDone(true)
+  }
 
   async function handleLogout() {
     const supabase = createClient()
@@ -303,6 +316,17 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
             items={items}
             initialIndex={fullscreenIndex}
             onClose={() => setFullscreenIndex(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ─── ウェルカム画面 ───────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {!welcomeDone && (
+          <WelcomeScreen
+            displayName={displayName}
+            preloadUrls={preloadUrls}
+            onOpen={handleWelcomeOpen}
           />
         )}
       </AnimatePresence>

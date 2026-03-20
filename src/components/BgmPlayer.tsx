@@ -41,24 +41,6 @@ const BgmPlayer = forwardRef<BgmPlayerHandle, Props>(function BgmPlayer({ src, o
 
   useImperativeHandle(ref, () => ({ toggle: togglePlay }))
 
-  // iOS Safari: 最初のユーザー操作で自動再生
-  useEffect(() => {
-    function onFirstInteraction() {
-      if (interactedRef.current) return
-      interactedRef.current = true
-      const audio = audioRef.current
-      if (!audio) return
-      audio.play().then(() => updatePlaying(true)).catch(() => {})
-    }
-    window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true })
-    window.addEventListener('click',      onFirstInteraction, { once: true })
-    return () => {
-      window.removeEventListener('touchstart', onFirstInteraction)
-      window.removeEventListener('click',      onFirstInteraction)
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return <audio ref={audioRef} src={src} loop preload="auto" />
 })
 
