@@ -3,10 +3,15 @@ import { createClient } from '@/lib/supabase/server'
 import LoginForm from '@/components/LoginForm'
 import PageTransition from '@/components/PageTransition'
 
+const STICKER_COUNT = 47
+
 export default async function LoginPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (user) redirect('/album')
+
+  const stickerIndex = Math.floor(Math.random() * STICKER_COUNT) + 1
+  const stickerSrc = `/assets/stickers/s${stickerIndex}.png`
 
   return (
     <PageTransition>
@@ -18,17 +23,34 @@ export default async function LoginPage() {
         <div className="w-full max-w-sm">
           {/* アプリ名 */}
           <div className="mb-8 text-center">
-            <h1
-              className="font-display block"
-              style={{
-                fontSize: 64,
-                color: '#000000',
-                letterSpacing: '0.02em',
-                fontWeight: 500,
-              }}
-            >
-              Replay.
-            </h1>
+            {/* ステッカー（タイトルに少し被る位置） */}
+            <div className="relative inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={stickerSrc}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute"
+                style={{
+                  width: 56,
+                  top: -28,
+                  right: -20,
+                  transform: 'rotate(12deg)',
+                  zIndex: 10,
+                }}
+              />
+              <h1
+                className="font-display block relative"
+                style={{
+                  fontSize: 64,
+                  color: '#000000',
+                  letterSpacing: '0.02em',
+                  fontWeight: 500,
+                }}
+              >
+                Replay.
+              </h1>
+            </div>
             <p
               className="mt-1"
               style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500 }}
