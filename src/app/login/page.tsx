@@ -55,7 +55,7 @@ export default async function LoginPage() {
             </h1>
             <p
               className="relative mt-1"
-              style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500, zIndex: 1 }}
+              style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500, zIndex: 1, WebkitTextStroke: '3px #F2F2F7', paintOrder: 'stroke fill' }}
             >
               Anfield F.C. 22へ送る、あなただけのアルバム。
             </p>
