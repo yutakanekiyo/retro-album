@@ -33,6 +33,15 @@ export const TEXTURE_ASSETS      = [
   '/assets/textures/bg2.jpg',
   '/assets/textures/bg3.jpeg',
   '/assets/textures/bg4.jpeg',
+  '/assets/textures/bg5.jpeg',
+  '/assets/textures/bg6.jpeg',
+  '/assets/textures/bg7.jpeg',
+  '/assets/textures/bg8.jpeg',
+  '/assets/textures/bg9.jpeg',
+  '/assets/textures/bg10.jpeg',
+  '/assets/textures/bg11.jpeg',
+  '/assets/textures/bg12.jpeg',
+  '/assets/textures/bg13.jpeg',
 ]
 
 export const NOISE_SVG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`
