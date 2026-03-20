@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { usernameToEmail } from '@/lib/usernameToEmail'
 
 export default function LoginForm() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -17,12 +18,28 @@ export default function LoginForm() {
     setError(null)
 
     const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    // @ が含まれていればメールアドレスとして使い、なければ固定ドメインに変換
+    const email = username.includes('@') ? username.trim() : usernameToEmail(username)
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError('メールアドレスまたはパスワードが正しくありません')
+      setError('ユーザー名またはパスワードが正しくありません')
       setLoading(false)
       return
+    }
+
+    // role に応じてリダイレクト
+    if (data.user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single()
+      if ((profile as { role: string } | null)?.role === 'admin') {
+        router.push('/admin')
+        router.refresh()
+        return
+      }
     }
 
     router.push('/album')
@@ -31,26 +48,43 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* メールアドレス */}
+      {/* ユーザー名 */}
       <div>
-        <label className="block text-xs text-[#8b6340] mb-1.5 tracking-widest uppercase">
-          Email
+        <label
+          className="font-ui block mb-1.5 uppercase tracking-wider"
+          style={{ fontSize: 11, color: '#9C8E82' }}
+        >
+          ユーザー名 / メールアドレス
         </label>
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
-          autoComplete="email"
-          className="w-full rounded bg-[#0f0a04] border border-[#8b6340]/40 px-4 py-3 text-[#f5e6d0] text-sm placeholder-[#8b6340]/50 focus:outline-none focus:border-[#d4843a] transition-colors"
-          placeholder="your@email.com"
+          autoComplete="username"
+          placeholder="username または email@example.com"
+          className="w-full focus:outline-none transition-colors"
+          style={{
+            background: 'rgba(255,255,255,0.7)',
+            border: '1px solid #D9CFC4',
+            borderRadius: 12,
+            padding: '14px 16px',
+            minHeight: 48,
+            color: '#2C2420',
+            fontSize: 14,
+          }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#B85C3C' }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = '#D9CFC4' }}
         />
       </div>
 
       {/* パスワード */}
       <div>
-        <label className="block text-xs text-[#8b6340] mb-1.5 tracking-widest uppercase">
-          Password
+        <label
+          className="font-ui block mb-1.5 uppercase tracking-wider"
+          style={{ fontSize: 11, color: '#9C8E82' }}
+        >
+          パスワード
         </label>
         <input
           type="password"
@@ -58,21 +92,48 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           autoComplete="current-password"
-          className="w-full rounded bg-[#0f0a04] border border-[#8b6340]/40 px-4 py-3 text-[#f5e6d0] text-sm placeholder-[#8b6340]/50 focus:outline-none focus:border-[#d4843a] transition-colors"
           placeholder="••••••••"
+          className="w-full focus:outline-none transition-colors"
+          style={{
+            background: 'rgba(255,255,255,0.7)',
+            border: '1px solid #D9CFC4',
+            borderRadius: 12,
+            padding: '14px 16px',
+            minHeight: 48,
+            color: '#2C2420',
+            fontSize: 14,
+          }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = '#B85C3C' }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = '#D9CFC4' }}
         />
       </div>
 
       {/* エラーメッセージ */}
       {error && (
-        <p className="text-xs text-red-400/80 text-center">{error}</p>
+        <p
+          className="text-xs text-center"
+          style={{ color: 'rgba(184,92,60,0.9)' }}
+        >
+          {error}
+        </p>
       )}
 
       {/* ログインボタン */}
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded bg-[#d4843a] px-4 py-3 text-sm font-semibold text-[#1a1208] tracking-wide hover:bg-[#e8a85a] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full transition-colors active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+          background: '#B85C3C',
+          color: '#FAF6F0',
+          borderRadius: 12,
+          minHeight: 48,
+          fontWeight: 500,
+          fontSize: 14,
+          border: 'none',
+        }}
+        onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = '#A04E30' }}
+        onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = '#B85C3C' }}
       >
         {loading ? '読み込み中...' : 'アルバムを開く'}
       </button>

@@ -1,13 +1,21 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import AdminPreviewButton from '@/components/admin/AdminPreviewButton'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
-  if (user.email !== process.env.ADMIN_EMAIL) redirect('/album')
+  if (!user) redirect('/admin-auth')
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if ((profile as { role: string } | null)?.role !== 'admin') redirect('/album')
 
   return (
     <div className="min-h-screen bg-[#0f0a04] text-[#f5e6d0]">
@@ -20,9 +28,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               Admin Panel
             </Link>
           </div>
-          <Link href="/album" className="text-xs text-[#8b6340] hover:text-[#d4843a] transition-colors">
-            アルバムへ →
-          </Link>
+          <div className="flex items-center gap-4">
+            <AdminPreviewButton />
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-6 py-8">

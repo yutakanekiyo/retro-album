@@ -28,9 +28,13 @@ CREATE TABLE IF NOT EXISTS album_items (
   file_url TEXT NOT NULL,
   thumbnail_url TEXT,
   caption TEXT,
+  date_label TEXT,
   sort_order INTEGER DEFAULT 0 NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
+
+-- v2 migration: date_label カラムを追加（既存DBへの適用）
+ALTER TABLE album_items ADD COLUMN IF NOT EXISTS date_label TEXT;
 
 -- messages テーブル
 CREATE TABLE IF NOT EXISTS messages (

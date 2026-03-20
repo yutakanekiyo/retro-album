@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import AlbumViewer, { type AlbumItem } from '@/components/AlbumViewer'
-import LogoutButton from '@/components/LogoutButton'
+import type { AlbumItem } from '@/components/AlbumViewer'
+import AlbumPageClient from '@/components/AlbumPageClient'
+import NoAlbumScreen from '@/components/NoAlbumScreen'
 import PageTransition from '@/components/PageTransition'
-import BgmPlayer from '@/components/BgmPlayer'
 
 type RawAlbumItem = {
   id: string
@@ -11,6 +11,7 @@ type RawAlbumItem = {
   file_url: string
   thumbnail_url: string | null
   caption: string | null
+  date_label: string | null
   sort_order: number
 }
 
@@ -27,7 +28,7 @@ export default async function AlbumPage() {
     .single()
   const profile = profileData as { display_name: string; avatar_url: string | null } | null
 
-  // アルバム取得
+  // アルバム取得（基本フィールド）
   const { data: albumData } = await supabase
     .from('albums')
     .select('id, title, description, bgm_url')
@@ -39,6 +40,20 @@ export default async function AlbumPage() {
     description: string | null
     bgm_url: string | null
   } | null
+
+  // レコードセクション用フィールド（DBマイグレーション後に有効になる。未実行でも正常動作する）
+  let recordInfo: { jacketUrl: string | null; songTitle: string | null; songArtist: string | null } | null = null
+  if (album) {
+    const { data: recData } = await supabase
+      .from('albums')
+      .select('jacket_url, song_title, song_artist')
+      .eq('user_id', user.id)
+      .single()
+    if (recData) {
+      const rd = recData as { jacket_url: string | null; song_title: string | null; song_artist: string | null }
+      recordInfo = { jacketUrl: rd.jacket_url, songTitle: rd.song_title, songArtist: rd.song_artist }
+    }
+  }
 
   const displayName = profile?.display_name ?? user.email ?? 'ゲスト'
 
@@ -56,7 +71,7 @@ export default async function AlbumPage() {
   if (album) {
     const { data: rawItems } = await supabase
       .from('album_items')
-      .select('id, type, file_url, thumbnail_url, caption, sort_order')
+      .select('id, type, file_url, thumbnail_url, caption, date_label, sort_order')
       .eq('album_id', album.id)
       .order('sort_order', { ascending: true })
 
@@ -65,7 +80,6 @@ export default async function AlbumPage() {
         (rawItems as RawAlbumItem[]).map(async (item) => {
           const bucket = item.type === 'photo' ? 'album-photos' : 'album-videos'
 
-          // 署名付きURL生成（1時間有効）
           const { data: urlData } = await supabase.storage
             .from(bucket)
             .createSignedUrl(item.file_url, 3600)
@@ -84,6 +98,7 @@ export default async function AlbumPage() {
             signedUrl: urlData?.signedUrl ?? item.file_url,
             thumbnailUrl,
             caption: item.caption,
+            dateLabel: item.date_label,
             sort_order: item.sort_order,
           }
         })
@@ -93,41 +108,17 @@ export default async function AlbumPage() {
 
   return (
     <PageTransition>
-      <div className="flex h-dvh flex-col bg-[#0f0a04]">
-        {/* ヘッダー */}
-        <header className="flex shrink-0 items-center justify-between bg-[#0a0604] border-b border-[#8b6340]/20 px-5 py-2.5">
-          <div className="flex items-center gap-2.5">
-            <span className="text-base">🎞️</span>
-            <span className="font-elite text-sm tracking-[0.2em] text-[#d4843a]">
-              RETRO ALBUM
-            </span>
-            {album?.title && (
-              <>
-                <span className="text-[#8b6340]/40">·</span>
-                <span className="hidden text-xs text-[#8b6340] sm:block truncate max-w-[160px]">
-                  {album.title}
-                </span>
-              </>
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            {bgmSignedUrl && <BgmPlayer src={bgmSignedUrl} />}
-            <span className="hidden font-elite text-[11px] text-[#8b6340] sm:block">
-              {displayName}
-            </span>
-            <LogoutButton />
-          </div>
-        </header>
-
-        {/* アルバムビューア or 空状態 */}
+      <div className="flex h-dvh flex-col">
+        {/* メインコンテンツ */}
         {album ? (
-          <AlbumViewer items={items} />
+          <AlbumPageClient
+            items={items}
+            displayName={displayName}
+            bgmSignedUrl={bgmSignedUrl ?? null}
+            recordInfo={recordInfo}
+          />
         ) : (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <p className="font-elite text-lg tracking-widest text-[#d4843a]">NO ALBUM</p>
-            <p className="text-xs text-[#8b6340]">ようこそ、{displayName} さん</p>
-            <p className="text-xs text-[#8b6340]/60">アルバムはまだ準備されていません</p>
-          </div>
+          <NoAlbumScreen displayName={displayName} />
         )}
       </div>
     </PageTransition>

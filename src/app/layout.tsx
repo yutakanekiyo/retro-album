@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Noto_Serif_JP, Special_Elite } from 'next/font/google'
+import { Noto_Serif_JP, Special_Elite, Caveat, Playfair_Display, Inter } from 'next/font/google'
 import './globals.css'
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
 
@@ -14,6 +14,26 @@ const specialElite = Special_Elite({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-special-elite',
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-caveat',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 })
 
@@ -53,7 +73,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: '#1a1208',
+  themeColor: '#FAF6F0',
   viewportFit: 'cover', // iPhone のノッチ・ホームバー対応
 }
 
@@ -64,7 +84,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSerifJP.variable} ${specialElite.variable} film-grain vignette`}>
+      <body className={`${notoSerifJP.variable} ${specialElite.variable} ${caveat.variable} ${playfair.variable} ${inter.variable} film-grain vignette`}>
         <ServiceWorkerRegistration />
         {children}
       </body>

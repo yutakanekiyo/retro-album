@@ -10,85 +10,114 @@ export default async function LoginPage() {
 
   return (
     <PageTransition>
-      <div className="scanlines relative flex min-h-dvh flex-col items-center justify-center bg-[#1a1208] px-6 overflow-hidden">
-        {/* 背景グラデーション */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#2d1a0a_0%,_#1a1208_50%,_#0a0604_100%)]" />
+      <div
+        className="relative flex min-h-dvh flex-col items-center justify-center px-6 overflow-hidden"
+        style={{ background: '#FAF6F0' }}
+      >
+        {/* 背景テクスチャ */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/textures/bg2.jpg"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ opacity: 0.25 }}
+        />
 
-        {/* フィルムストリップ左右 */}
-        <FilmStrip side="left" />
-        <FilmStrip side="right" />
+        {/* フィルムグレインオーバーレイ */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            opacity: 0.03,
+          }}
+        />
 
-        {/* メインカード */}
+        {/* 右上ステッカー */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/stickers/s8.png"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute top-4 right-4"
+          style={{ width: 56, opacity: 0.35, transform: 'rotate(12deg)' }}
+        />
+
+        {/* 左下ステッカー */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/stickers/s22.png"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute bottom-6 left-4"
+          style={{ width: 48, opacity: 0.28, transform: 'rotate(-10deg)' }}
+        />
+
+        {/* メインコンテンツ */}
         <div className="relative z-10 w-full max-w-sm">
-
-          {/* ロゴ */}
-          <div className="mb-10 text-center">
-            {/* フィルムアイコン */}
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-[#8b6340]/40 bg-[#2d1a0a]/60 text-3xl shadow-[0_0_30px_rgba(212,132,58,0.15)]">
-              🎞️
-            </div>
-
-            <h1 className="font-elite text-4xl tracking-[0.25em] text-[#f5e6d0]">
-              RETRO
+          {/* アプリ名 */}
+          <div className="mb-8 text-center">
+            <h1
+              className="font-display inline-block"
+              style={{
+                fontSize: 32,
+                color: '#2C2420',
+                letterSpacing: '0.08em',
+                fontWeight: 600,
+              }}
+            >
+              Retro Album
             </h1>
-            <h2 className="font-elite text-xl tracking-[0.5em] text-[#d4843a]">
-              ALBUM
-            </h2>
+            <span
+              className="font-caveat inline-block"
+              style={{
+                fontSize: 16,
+                color: '#6B5E54',
+                transform: 'rotate(-2deg)',
+                marginLeft: 8,
+              }}
+            >
+              思い出のかけら
+            </span>
 
-            <div className="mx-auto mt-4 flex items-center gap-3 px-4">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6340]/60 to-[#8b6340]/60" />
-              <div className="h-1 w-1 rounded-full bg-[#d4843a] shadow-[0_0_6px_#d4843a]" />
-              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#8b6340]/60 to-[#8b6340]/60" />
-            </div>
-
-            <p className="mt-3 font-elite text-[11px] tracking-[0.35em] text-[#8b6340] uppercase">
-              Your Memories, Forever
-            </p>
+            {/* 区切り線 */}
+            <div
+              className="mx-auto mt-4"
+              style={{ height: 1, background: '#D9CFC4', maxWidth: 200 }}
+            />
           </div>
 
-          {/* ログインカード */}
-          <div className="relative rounded border border-[#8b6340]/25 bg-[#2d1a0a]/70 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.6)] backdrop-blur-sm">
-            {/* カードコーナー装飾 */}
-            <Corner pos="tl" /><Corner pos="tr" /><Corner pos="bl" /><Corner pos="br" />
+          {/* フォームラッパー */}
+          <div className="relative">
+            {/* マスキングテープ */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/tapes/m5.png"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute"
+              style={{
+                width: 88,
+                top: -16,
+                left: '50%',
+                transform: 'translateX(-50%) rotate(-2deg)',
+                zIndex: 10,
+              }}
+            />
+
             <LoginForm />
           </div>
-
-          <p className="mt-5 text-center font-elite text-[10px] tracking-[0.3em] text-[#8b6340]/50 uppercase">
-            For your eyes only
-          </p>
         </div>
+
+        {/* 管理者リンク（控えめ） */}
+        <a
+          href="/admin-auth"
+          className="mt-10 block text-center text-xs"
+          style={{ color: 'rgba(107,94,84,0.45)' }}
+        >
+          アルバムを作成する方はこちら
+        </a>
       </div>
     </PageTransition>
-  )
-}
-
-// コーナー装飾
-function Corner({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
-  const cls = {
-    tl: 'top-0 left-0 border-t border-l',
-    tr: 'top-0 right-0 border-t border-r',
-    bl: 'bottom-0 left-0 border-b border-l',
-    br: 'bottom-0 right-0 border-b border-r',
-  }[pos]
-  return (
-    <div className={`absolute ${cls} h-4 w-4 border-[#d4843a]/60`} />
-  )
-}
-
-// フィルムストリップ
-function FilmStrip({ side }: { side: 'left' | 'right' }) {
-  const holes = Array.from({ length: 24 })
-  const border = side === 'left' ? 'border-r' : 'border-l'
-  return (
-    <div
-      className={`absolute top-0 bottom-0 ${side === 'left' ? 'left-0' : 'right-0'} w-7 flex flex-col items-center ${border} border-[#8b6340]/15 bg-[#0a0604] gap-3 py-3 overflow-hidden`}
-    >
-      {holes.map((_, i) => (
-        <div
-          key={i}
-          className="h-[10px] w-[14px] shrink-0 rounded-sm bg-[#1a1208] border border-[#8b6340]/25"
-        />
-      ))}
-    </div>
   )
 }

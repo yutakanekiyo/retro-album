@@ -63,6 +63,7 @@ export interface Database {
           file_url: string
           thumbnail_url: string | null
           caption: string | null
+          date_label: string | null
           sort_order: number
           created_at: string
         }
@@ -73,6 +74,7 @@ export interface Database {
           file_url: string
           thumbnail_url?: string | null
           caption?: string | null
+          date_label?: string | null
           sort_order?: number
           created_at?: string
         }
@@ -83,6 +85,7 @@ export interface Database {
           file_url?: string
           thumbnail_url?: string | null
           caption?: string | null
+          date_label?: string | null
           sort_order?: number
           created_at?: string
         }

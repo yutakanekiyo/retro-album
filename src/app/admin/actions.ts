@@ -4,13 +4,19 @@ import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
-// 管理者チェック
+// 管理者チェック（profiles.role = 'admin' で判定）
 async function assertAdmin() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.email !== process.env.ADMIN_EMAIL) {
-    throw new Error('Unauthorized')
-  }
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if ((profile as { role: string } | null)?.role !== 'admin') throw new Error('Unauthorized')
   return user
 }
 
@@ -43,6 +49,17 @@ export async function createUser(email: string, password: string, displayName: s
   return data.user
 }
 
+export async function updateUsername(userId: string, newUsername: string) {
+  await assertAdmin()
+  const { usernameToEmail } = await import('@/lib/usernameToEmail')
+  const admin = createAdminClient()
+  const { error } = await admin.auth.admin.updateUserById(userId, {
+    email: usernameToEmail(newUsername),
+  })
+  if (error) throw error
+  revalidatePath('/admin')
+}
+
 export async function deleteUser(userId: string) {
   await assertAdmin()
   const admin = createAdminClient()
@@ -71,7 +88,7 @@ export async function createAlbum(userId: string, title: string, description: st
 
 export async function updateAlbum(
   albumId: string,
-  fields: { title?: string; description?: string; bgm_url?: string }
+  fields: { title?: string; description?: string; bgm_url?: string; jacket_url?: string; song_title?: string; song_artist?: string }
 ) {
   await assertAdmin()
   const admin = createAdminClient()
@@ -143,6 +160,19 @@ export async function updateCaption(itemId: string, caption: string) {
   const { error } = await admin
     .from('album_items')
     .update({ caption: caption || null })
+    .eq('id', itemId)
+  if (error) throw error
+
+  revalidatePath('/admin/albums/[userId]', 'page')
+}
+
+export async function updateDateLabel(itemId: string, dateLabel: string) {
+  await assertAdmin()
+  const admin = createAdminClient()
+
+  const { error } = await admin
+    .from('album_items')
+    .update({ date_label: dateLabel || null })
     .eq('id', itemId)
   if (error) throw error
 

@@ -13,6 +13,7 @@ type RawItem = {
   file_url: string
   thumbnail_url: string | null
   caption: string | null
+  date_label: string | null
   sort_order: number
 }
 
@@ -41,7 +42,7 @@ export default async function AlbumManagePage({ params }: Props) {
   // アルバム取得
   const { data: albumData } = await admin
     .from('albums')
-    .select('id, title, description, bgm_url')
+    .select('id, title, description, bgm_url, jacket_url, song_title, song_artist')
     .eq('user_id', userId)
     .single()
   const album = albumData as {
@@ -49,6 +50,9 @@ export default async function AlbumManagePage({ params }: Props) {
     title: string
     description: string | null
     bgm_url: string | null
+    jacket_url: string | null
+    song_title: string | null
+    song_artist: string | null
   } | null
 
   // アルバムアイテム取得 + 署名付きURL
@@ -56,7 +60,7 @@ export default async function AlbumManagePage({ params }: Props) {
   if (album) {
     const { data: rawItems } = await admin
       .from('album_items')
-      .select('id, type, file_url, thumbnail_url, caption, sort_order')
+      .select('id, type, file_url, thumbnail_url, caption, date_label, sort_order')
       .eq('album_id', album.id)
       .order('sort_order', { ascending: true })
 

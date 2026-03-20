@@ -13,11 +13,22 @@
   --font-sans: var(--font-noto-serif);
   --font-mono: var(--font-geist-mono);
   --font-elite: var(--font-special-elite);
+  --font-caveat: var(--font-caveat);
 }
 
 :root {
   --background: #1a1208;
   --foreground: #f5e6d0;
+
+  /* Design System */
+  --bg-primary: #FAF6F0;
+  --bg-secondary: #F0EBE3;
+  --text-primary: #2C2420;
+  --text-secondary: #6B5E54;
+  --accent-primary: #B85C3C;
+  --accent-hover: #A04E30;
+  --border: #D9CFC4;
+  --gallery-bg: #1A1614;
 }
 
 * {
@@ -37,12 +48,23 @@ body {
   font-family: var(--font-special-elite), 'Courier New', monospace;
 }
 
+/* Caveat 手書きフォント */
+.font-caveat {
+  font-family: var(--font-caveat), 'Comic Sans MS', cursive;
+}
+
+.font-display { font-family: var(--font-playfair), 'Times New Roman', serif; }
+.font-ui { font-family: var(--font-inter), 'Noto Sans JP', sans-serif; }
+
 /* =============================================
    スクロールバー
    ============================================= */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #1a1208; }
 ::-webkit-scrollbar-thumb { background: #8b6340; border-radius: 2px; }
+
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
 
 /* =============================================
    フィルムグレイン（全画面・軽量版）
@@ -173,12 +195,29 @@ body {
 }
 
 /* =============================================
+   レコード回転アニメーション
+   ============================================= */
+@keyframes record-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* =============================================
    BGMイコライザーアニメーション
    ============================================= */
 @keyframes equalizer {
   from { height: 3px; }
   to   { height: 12px; }
 }
+
+/* =============================================
+   BGMパルスアニメーション
+   ============================================= */
+@keyframes music-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.92); }
+}
+.bgm-playing { animation: music-pulse 2s ease-in-out infinite; }
 
 /* =============================================
    管理画面の共通入力スタイル

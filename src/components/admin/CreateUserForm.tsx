@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createUser } from '@/app/admin/actions'
+import { usernameToEmail } from '@/lib/usernameToEmail'
 
 export default function CreateUserForm() {
   const [open, setOpen] = useState(false)
@@ -15,7 +16,7 @@ export default function CreateUserForm() {
     const fd = new FormData(e.currentTarget)
     try {
       await createUser(
-        fd.get('email') as string,
+        usernameToEmail(fd.get('username') as string),
         fd.get('password') as string,
         fd.get('displayName') as string
       )
@@ -53,10 +54,10 @@ export default function CreateUserForm() {
           className="admin-input"
         />
         <input
-          name="email"
-          type="email"
+          name="username"
+          type="text"
           required
-          placeholder="メールアドレス"
+          placeholder="ユーザー名（例: tanaka）"
           className="admin-input"
         />
         <input

@@ -1,6 +1,12 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import CreateUserForm from '@/components/admin/CreateUserForm'
+import EditUsernameButton from '@/components/admin/EditUsernameButton'
+
+const EMAIL_DOMAIN = '@retro-album.local'
+function emailToUsername(email: string): string {
+  return email.endsWith(EMAIL_DOMAIN) ? email.slice(0, -EMAIL_DOMAIN.length) : email
+}
 
 export default async function AdminPage() {
   const admin = createAdminClient()
@@ -49,11 +55,15 @@ export default async function AdminPage() {
           senpaiUsers.map((user) => {
             const album = albumMap.get(user.id)
             const displayName = profileMap.get(user.id) ?? user.email
+            const username = emailToUsername(user.email ?? '')
             return (
               <div key={user.id} className="flex items-center justify-between px-5 py-4">
                 <div>
                   <p className="font-semibold text-[#f5e6d0]">{displayName}</p>
-                  <p className="text-xs text-[#8b6340]">{user.email}</p>
+                  <p className="mt-0.5 text-xs text-[#8b6340]">
+                    ユーザー名:{' '}
+                    <EditUsernameButton userId={user.id} currentUsername={username} />
+                  </p>
                   {album ? (
                     <p className="mt-0.5 text-xs text-[#d4843a]">
                       📔 {album.title}

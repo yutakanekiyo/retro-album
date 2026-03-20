@@ -11,6 +11,7 @@ export type AlbumItem = {
   signedUrl: string
   thumbnailUrl: string | null
   caption: string | null
+  dateLabel: string | null
   sort_order: number
 }
 
