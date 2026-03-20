@@ -25,12 +25,10 @@ export default async function AlbumManagePage({ params }: Props) {
   const { userId } = await params
   const admin = createAdminClient()
 
-  // ユーザー情報取得
   const { data: userData, error: userError } = await admin.auth.admin.getUserById(userId)
   if (userError || !userData.user) notFound()
   const user = userData.user
 
-  // プロフィール取得
   const { data: profileData } = await admin
     .from('profiles')
     .select('display_name')
@@ -39,7 +37,6 @@ export default async function AlbumManagePage({ params }: Props) {
   const profile = profileData as { display_name: string } | null
   const displayName = profile?.display_name ?? user.email ?? userId
 
-  // アルバム取得
   const { data: albumData } = await admin
     .from('albums')
     .select('id, title, description, bgm_url, jacket_url, song_title, song_artist')
@@ -55,7 +52,6 @@ export default async function AlbumManagePage({ params }: Props) {
     song_artist: string | null
   } | null
 
-  // アルバムアイテム取得 + 署名付きURL
   let items: (RawItem & { signedUrl: string })[] = []
   if (album) {
     const { data: rawItems } = await admin
@@ -82,63 +78,73 @@ export default async function AlbumManagePage({ params }: Props) {
     : 1
 
   return (
-    <div className="space-y-8">
-      {/* パンくず */}
-      <div className="flex items-center gap-2 text-sm text-[#8E8E93]">
-        <Link href="/admin" className="hover:text-[#007AFF] transition-colors">
-          先輩一覧
-        </Link>
-        <span>›</span>
-        <span className="text-[#000000]">{displayName}</span>
+    <div className="space-y-6">
+      {/* ページ見出し */}
+      <div className="px-1">
+        <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>{displayName}</h1>
+        <p className="mt-0.5 text-sm" style={{ color: '#8E8E93' }}>{user.email}</p>
       </div>
 
-      <div>
-        <h1 className="text-2xl font-bold text-[#000000]">{displayName}</h1>
-        <p className="text-xs text-[#8E8E93]">{user.email}</p>
-      </div>
-
-      {/* アルバム作成 or 編集 */}
       {!album ? (
-        <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
-          <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">アルバムを作成</h2>
-          <CreateAlbumForm userId={userId} />
+        /* ── アルバム未作成 ── */
+        <section>
+          <p className="px-1 mb-2 text-xs uppercase tracking-wide" style={{ color: '#8E8E93' }}>
+            アルバム
+          </p>
+          <div className="rounded-2xl overflow-hidden p-4" style={{ background: '#FFFFFF' }}>
+            <CreateAlbumForm userId={userId} />
+          </div>
         </section>
       ) : (
         <>
-          {/* アルバム情報編集 */}
-          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
-            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">アルバム情報</h2>
-            <AlbumEditForm album={album} />
-          </section>
-
-          {/* BGM */}
-          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
-            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">BGM</h2>
-            <BgmUploader albumId={album.id} currentBgmPath={album.bgm_url} />
-          </section>
-
-          {/* 写真アップロード */}
-          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">
-                写真・動画を追加
-              </h2>
-              <span className="text-xs text-[#8E8E93]">{items.length} 件</span>
+          {/* ── アルバム情報 ── */}
+          <section>
+            <p className="px-1 mb-2 text-xs uppercase tracking-wide" style={{ color: '#8E8E93' }}>
+              アルバム情報
+            </p>
+            <div className="rounded-2xl p-4 space-y-3" style={{ background: '#FFFFFF' }}>
+              <AlbumEditForm album={album} />
             </div>
-            <PhotoUploader
-              albumId={album.id}
-              userId={userId}
-              nextSortOrder={nextSortOrder}
-            />
           </section>
 
-          {/* アルバムアイテム一覧 */}
-          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-4">
-            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">
-              アルバム内容（↑↓で並び替え）
-            </h2>
-            <AlbumItemList items={items} />
+          {/* ── BGM ── */}
+          <section>
+            <p className="px-1 mb-2 text-xs uppercase tracking-wide" style={{ color: '#8E8E93' }}>
+              BGM
+            </p>
+            <div className="rounded-2xl p-4" style={{ background: '#FFFFFF' }}>
+              <BgmUploader albumId={album.id} currentBgmPath={album.bgm_url} />
+            </div>
           </section>
+
+          {/* ── 写真・動画 ── */}
+          <section>
+            <div className="px-1 mb-2 flex items-baseline justify-between">
+              <p className="text-xs uppercase tracking-wide" style={{ color: '#8E8E93' }}>
+                写真・動画
+              </p>
+              <span className="text-xs" style={{ color: '#AEAEB2' }}>{items.length} 件</span>
+            </div>
+            <div className="rounded-2xl p-4" style={{ background: '#FFFFFF' }}>
+              <PhotoUploader
+                albumId={album.id}
+                userId={userId}
+                nextSortOrder={nextSortOrder}
+              />
+            </div>
+          </section>
+
+          {/* ── アルバム内容 ── */}
+          {items.length > 0 && (
+            <section>
+              <p className="px-1 mb-2 text-xs uppercase tracking-wide" style={{ color: '#8E8E93' }}>
+                並び替え
+              </p>
+              <div className="rounded-2xl p-4" style={{ background: '#FFFFFF' }}>
+                <AlbumItemList items={items} />
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>

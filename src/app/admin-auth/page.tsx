@@ -12,7 +12,6 @@ export default async function AdminAuthPage() {
       .select('role')
       .eq('id', user.id)
       .single()
-    // 既にログイン済みなら role に応じてリダイレクト
     redirect((profile as { role: string } | null)?.role === 'admin' ? '/admin' : '/album')
   }
 
@@ -21,24 +20,23 @@ export default async function AdminAuthPage() {
       className="flex min-h-dvh flex-col items-center justify-center px-6"
       style={{ background: '#F2F2F7' }}
     >
-      {/* ロゴ */}
+      {/* タイトル */}
       <div className="mb-8 text-center">
-        <p className="text-xs tracking-widest uppercase mb-2" style={{ color: '#8E8E93' }}>
-          Retro Album
-        </p>
-        <h1 className="text-xl font-bold tracking-wide" style={{ color: '#000000' }}>
+        <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>
           管理者ポータル
         </h1>
+        <p className="mt-1 text-sm" style={{ color: '#8E8E93' }}>Retro Album</p>
       </div>
 
       <AdminAuthForm />
 
-      <p className="mt-8 text-xs" style={{ color: '#AEAEB2' }}>
-        先輩のアルバムを見る方は
-        <a href="/login" className="ml-1 underline hover:text-[#007AFF] transition-colors" style={{ color: '#8E8E93' }}>
-          こちら
-        </a>
-      </p>
+      <a
+        href="/login"
+        className="mt-8 text-xs transition-opacity active:opacity-60"
+        style={{ color: '#AEAEB2' }}
+      >
+        先輩のアルバムを見る方はこちら
+      </a>
     </div>
   )
 }

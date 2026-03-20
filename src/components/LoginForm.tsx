@@ -18,7 +18,6 @@ export default function LoginForm() {
     setError(null)
 
     const supabase = createClient()
-    // @ が含まれていればメールアドレスとして使い、なければ固定ドメインに変換
     const email = username.includes('@') ? username.trim() : usernameToEmail(username)
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -28,7 +27,6 @@ export default function LoginForm() {
       return
     }
 
-    // role に応じてリダイレクト
     if (data.user) {
       const { data: profile } = await supabase
         .from('profiles')
@@ -47,14 +45,11 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {/* ユーザー名 */}
-      <div>
-        <label
-          className="font-ui block mb-1.5 uppercase tracking-wider"
-          style={{ fontSize: 11, color: '#8E8E93' }}
-        >
-          ユーザー名 / メールアドレス
+    <form onSubmit={handleSubmit}>
+      {/* ユーザー名 row */}
+      <div className="flex items-center px-4" style={{ minHeight: 52, borderBottom: '1px solid #F2F2F7' }}>
+        <label style={{ fontSize: 13, color: '#000000', width: 96, flexShrink: 0 }}>
+          ユーザー名
         </label>
         <input
           type="text"
@@ -62,28 +57,15 @@ export default function LoginForm() {
           onChange={(e) => setUsername(e.target.value)}
           required
           autoComplete="username"
-          placeholder="username または email@example.com"
-          className="w-full focus:outline-none transition-colors"
-          style={{
-            background: 'rgba(255,255,255,0.7)',
-            border: '1px solid #E5E5EA',
-            borderRadius: 12,
-            padding: '14px 16px',
-            minHeight: 48,
-            color: '#000000',
-            fontSize: 14,
-          }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
+          placeholder="username"
+          className="flex-1 focus:outline-none text-right"
+          style={{ fontSize: 15, color: '#000000', background: 'transparent' }}
         />
       </div>
 
-      {/* パスワード */}
-      <div>
-        <label
-          className="font-ui block mb-1.5 uppercase tracking-wider"
-          style={{ fontSize: 11, color: '#8E8E93' }}
-        >
+      {/* パスワード row */}
+      <div className="flex items-center px-4" style={{ minHeight: 52 }}>
+        <label style={{ fontSize: 13, color: '#000000', width: 96, flexShrink: 0 }}>
           パスワード
         </label>
         <input
@@ -93,50 +75,37 @@ export default function LoginForm() {
           required
           autoComplete="current-password"
           placeholder="••••••••"
-          className="w-full focus:outline-none transition-colors"
-          style={{
-            background: 'rgba(255,255,255,0.7)',
-            border: '1px solid #E5E5EA',
-            borderRadius: 12,
-            padding: '14px 16px',
-            minHeight: 48,
-            color: '#000000',
-            fontSize: 14,
-          }}
-          onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
+          className="flex-1 focus:outline-none text-right"
+          style={{ fontSize: 15, color: '#000000', background: 'transparent' }}
         />
       </div>
 
-      {/* エラーメッセージ */}
+      {/* エラー */}
       {error && (
-        <p
-          className="text-xs text-center"
-          style={{ color: 'rgba(184,92,60,0.9)' }}
-        >
+        <p className="px-4 pt-3 text-xs text-center" style={{ color: '#FF3B30' }}>
           {error}
         </p>
       )}
 
       {/* ログインボタン */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full transition-colors active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        style={{
-          background: '#007AFF',
-          color: '#FFFFFF',
-          borderRadius: 12,
-          minHeight: 48,
-          fontWeight: 500,
-          fontSize: 14,
-          border: 'none',
-        }}
-        onMouseEnter={(e) => { if (!loading) e.currentTarget.style.background = '#0066DD' }}
-        onMouseLeave={(e) => { if (!loading) e.currentTarget.style.background = '#007AFF' }}
-      >
-        {loading ? '読み込み中...' : 'アルバムを開く'}
-      </button>
+      <div className="px-4 pt-4 pb-4">
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full active:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+          style={{
+            background: '#6B5340',
+            color: '#FFFFFF',
+            borderRadius: 12,
+            minHeight: 50,
+            fontWeight: 600,
+            fontSize: 15,
+            border: 'none',
+          }}
+        >
+          {loading ? '読み込み中...' : 'アルバムを開く'}
+        </button>
+      </div>
     </form>
   )
 }

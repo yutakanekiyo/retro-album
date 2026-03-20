@@ -21,7 +21,7 @@ export default function NoAlbumScreen({ displayName }: { displayName: string }) 
         <div className="flex h-12 items-center justify-between px-3">
           <button
             onClick={handleLogout}
-            className="font-ui text-xs px-3 py-1.5 rounded-full border border-[#E5E5EA] bg-white text-[#8E8E93] hover:border-[#007AFF] hover:text-[#007AFF] transition-colors"
+            className="font-ui text-xs px-3 py-1.5 rounded-full border border-[#E5E5EA] bg-white text-[#8E8E93] hover:border-[#6B5340] hover:text-[#6B5340] transition-colors"
           >
             ログアウト
           </button>

@@ -11,16 +11,13 @@ function emailToUsername(email: string): string {
 export default async function AdminPage() {
   const admin = createAdminClient()
 
-  // 全ユーザーを取得
   const { data: usersData } = await admin.auth.admin.listUsers()
   const users = usersData?.users ?? []
 
-  // 全アルバムを取得
   const { data: albums } = await admin
     .from('albums')
     .select('id, user_id, title')
 
-  // 全プロフィールを取得
   const { data: profiles } = await admin
     .from('profiles')
     .select('id, display_name')
@@ -30,59 +27,67 @@ export default async function AdminPage() {
     (profiles ?? []).map((p) => [p.id, p.display_name])
   )
 
-  // 管理者自身を除外
   const senpaiUsers = users.filter((u) => u.email !== process.env.ADMIN_EMAIL)
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-[#000000]">先輩一覧</h1>
-        <p className="mt-1 text-sm text-[#8E8E93]">
-          {senpaiUsers.length} 人のアカウント
-        </p>
+    <div className="space-y-6">
+      {/* ページタイトル */}
+      <div className="px-1">
+        <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>先輩一覧</h1>
+        <p className="mt-0.5 text-sm" style={{ color: '#8E8E93' }}>{senpaiUsers.length} 人</p>
       </div>
 
-      {/* 新規追加フォーム */}
+      {/* 新規追加 */}
       <CreateUserForm />
 
-      {/* ユーザーリスト */}
-      <div className="divide-y divide-[#E5E5EA] rounded-lg border border-[#E5E5EA] bg-white">
-        {senpaiUsers.length === 0 ? (
-          <div className="p-8 text-center text-sm text-[#8E8E93]">
-            まだアカウントがありません。上のボタンから追加してください。
-          </div>
-        ) : (
-          senpaiUsers.map((user) => {
+      {/* iOS グループリスト */}
+      {senpaiUsers.length === 0 ? (
+        <div
+          className="rounded-2xl py-12 text-center text-sm"
+          style={{ background: '#FFFFFF', color: '#8E8E93' }}
+        >
+          まだアカウントがありません
+        </div>
+      ) : (
+        <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF' }}>
+          {senpaiUsers.map((user, index) => {
             const album = albumMap.get(user.id)
             const displayName = profileMap.get(user.id) ?? user.email
             const username = emailToUsername(user.email ?? '')
+            const isLast = index === senpaiUsers.length - 1
             return (
-              <div key={user.id} className="flex items-center justify-between px-5 py-4">
-                <div>
-                  <p className="font-semibold text-[#000000]">{displayName}</p>
-                  <p className="mt-0.5 text-xs text-[#8E8E93]">
-                    ユーザー名:{' '}
+              <Link
+                key={user.id}
+                href={`/admin/albums/${user.id}`}
+                className="flex items-center justify-between px-4 transition-colors active:bg-[#F2F2F7]"
+                style={{
+                  minHeight: 64,
+                  borderBottom: isLast ? 'none' : '1px solid #F2F2F7',
+                }}
+              >
+                {/* 左: テキスト情報 */}
+                <div className="flex-1 min-w-0 py-3">
+                  <p className="font-semibold truncate" style={{ fontSize: 16, color: '#000000' }}>
+                    {displayName}
+                  </p>
+                  <p className="mt-0.5 text-sm truncate" style={{ color: '#8E8E93' }}>
                     <EditUsernameButton userId={user.id} currentUsername={username} />
                   </p>
                   {album ? (
-                    <p className="mt-0.5 text-xs text-[#007AFF]">
-                      📔 {album.title}
+                    <p className="mt-0.5 text-xs truncate" style={{ color: '#6B5340' }}>
+                      {album.title}
                     </p>
                   ) : (
-                    <p className="mt-0.5 text-xs text-[#AEAEB2]">アルバム未作成</p>
+                    <p className="mt-0.5 text-xs" style={{ color: '#AEAEB2' }}>アルバム未作成</p>
                   )}
                 </div>
-                <Link
-                  href={`/admin/albums/${user.id}`}
-                  className="rounded border border-[#E5E5EA] px-3 py-1.5 text-xs text-[#8E8E93] hover:border-[#007AFF] hover:text-[#007AFF] transition-colors"
-                >
-                  管理 →
-                </Link>
-              </div>
+                {/* 右: シェブロン */}
+                <span className="ml-2 flex-shrink-0" style={{ color: '#C7C7CC', fontSize: 18 }}>›</span>
+              </Link>
             )
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
     </div>
   )
 }

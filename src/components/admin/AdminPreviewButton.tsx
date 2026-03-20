@@ -8,18 +8,18 @@ export default function AdminPreviewButton() {
   const match = pathname.match(/\/admin\/albums\/([^/]+)/)
 
   if (match) {
-    // アルバム管理ページ: そのユーザーのスクラップブックをプレビュー
     const userId = match[1]
     return (
       <Link
         href={`/admin/preview/${userId}`}
         target="_blank"
-        className="rounded border border-[#E5E5EA] px-3 py-1.5 text-xs text-[#007AFF] hover:border-[#007AFF] hover:bg-[#007AFF]/10 transition-colors"
+        className="transition-opacity active:opacity-60"
+        style={{ color: '#6B5340', fontSize: 15 }}
       >
         プレビュー ↗
       </Link>
     )
   }
 
-  return null
+  return <div />
 }

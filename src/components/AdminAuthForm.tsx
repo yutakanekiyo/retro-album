@@ -8,17 +8,6 @@ import { usernameToEmail } from '@/lib/usernameToEmail'
 
 type Tab = 'login' | 'register'
 
-const inputStyle: React.CSSProperties = {
-  background: '#FFFFFF',
-  border: '1px solid #E5E5EA',
-  borderRadius: 10,
-  padding: '12px 14px',
-  color: '#000000',
-  fontSize: 14,
-  width: '100%',
-  outline: 'none',
-}
-
 export default function AdminAuthForm() {
   const router = useRouter()
   const [tab, setTab] = useState<Tab>('login')
@@ -49,7 +38,6 @@ export default function AdminAuthForm() {
     setError(null)
     try {
       const { email } = await registerAdmin(identifier, password)
-      // 作成後に自動ログイン
       const supabase = createClient()
       const { error: loginErr } = await supabase.auth.signInWithPassword({ email, password })
       if (loginErr) throw new Error('アカウントは作成できましたが、ログインに失敗しました')
@@ -62,18 +50,22 @@ export default function AdminAuthForm() {
   }
 
   return (
-    <div className="w-full max-w-sm">
-      {/* タブ */}
-      <div className="flex mb-6 rounded-lg overflow-hidden border border-[#E5E5EA]">
+    <div className="w-full max-w-sm space-y-4">
+      {/* セグメントコントロール */}
+      <div
+        className="flex rounded-xl p-1"
+        style={{ background: '#E5E5EA' }}
+      >
         {(['login', 'register'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => { setTab(t); setError(null) }}
-            className="flex-1 py-2 text-sm transition-colors"
+            className="flex-1 py-1.5 rounded-lg text-sm transition-all"
             style={{
-              background: tab === t ? '#007AFF' : '#FFFFFF',
-              color: tab === t ? '#FFFFFF' : '#8E8E93',
+              background: tab === t ? '#FFFFFF' : 'transparent',
+              color: '#000000',
               fontWeight: tab === t ? 600 : 400,
+              boxShadow: tab === t ? '0 1px 3px rgba(0,0,0,0.12)' : 'none',
             }}
           >
             {t === 'login' ? 'ログイン' : '新規登録'}
@@ -81,11 +73,15 @@ export default function AdminAuthForm() {
         ))}
       </div>
 
-      <form onSubmit={tab === 'login' ? handleLogin : handleRegister} className="space-y-4">
-        <div>
-          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8E8E93' }}>
-            ユーザー名 / メールアドレス
-          </label>
+      {/* フォームカード */}
+      <form
+        onSubmit={tab === 'login' ? handleLogin : handleRegister}
+        className="rounded-2xl overflow-hidden"
+        style={{ background: '#FFFFFF' }}
+      >
+        {/* ユーザー名 */}
+        <div className="flex items-center px-4" style={{ minHeight: 52, borderBottom: '1px solid #F2F2F7' }}>
+          <label className="text-sm w-24 flex-shrink-0" style={{ color: '#000000' }}>ユーザー名</label>
           <input
             type="text"
             value={identifier}
@@ -93,15 +89,13 @@ export default function AdminAuthForm() {
             required
             autoComplete="username"
             placeholder="username または email"
-            style={inputStyle}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
+            className="flex-1 focus:outline-none text-right text-sm"
+            style={{ color: '#000000', background: 'transparent' }}
           />
         </div>
-        <div>
-          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8E8E93' }}>
-            パスワード
-          </label>
+        {/* パスワード */}
+        <div className="flex items-center px-4" style={{ minHeight: 52 }}>
+          <label className="text-sm w-24 flex-shrink-0" style={{ color: '#000000' }}>パスワード</label>
           <input
             type="password"
             value={password}
@@ -110,24 +104,27 @@ export default function AdminAuthForm() {
             autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
             placeholder="••••••••"
             minLength={tab === 'register' ? 8 : undefined}
-            style={inputStyle}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
+            className="flex-1 focus:outline-none text-right text-sm"
+            style={{ color: '#000000', background: 'transparent' }}
           />
         </div>
 
         {error && (
-          <p className="text-xs text-center" style={{ color: '#e8835a' }}>{error}</p>
+          <p className="px-4 py-2 text-xs text-center" style={{ color: '#FF3B30', borderTop: '1px solid #F2F2F7' }}>
+            {error}
+          </p>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-3 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
-          style={{ background: '#007AFF', color: '#FFFFFF' }}
-        >
-          {loading ? '処理中...' : tab === 'login' ? '管理画面へ' : 'アカウントを作成'}
-        </button>
+        <div className="px-4 py-4" style={{ borderTop: '1px solid #F2F2F7' }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 rounded-xl text-sm font-semibold transition-opacity active:opacity-70 disabled:opacity-50"
+            style={{ background: '#6B5340', color: '#FFFFFF' }}
+          >
+            {loading ? '処理中...' : tab === 'login' ? '管理画面へ' : 'アカウントを作成'}
+          </button>
+        </div>
       </form>
     </div>
   )

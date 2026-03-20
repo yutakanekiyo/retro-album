@@ -26,8 +26,8 @@
   --text-primary: #000000;
   --text-secondary: #8E8E93;
   --text-tertiary: #AEAEB2;
-  --accent-primary: #007AFF;
-  --accent-hover: #0066DD;
+  --accent-primary: #6B5340;
+  --accent-hover: #5A4535;
   --border: #E5E5EA;
   --border-light: #F2F2F7;
   --gallery-bg: #FFFFFF;
@@ -223,6 +223,6 @@ body {
   outline: none;
   transition: border-color 0.15s;
 }
-.admin-input:focus { border-color: #007AFF; }
+.admin-input:focus { border-color: #6B5340; }
 .admin-input::placeholder { color: #AEAEB2; }
 .admin-input:disabled { opacity: 0.5; }

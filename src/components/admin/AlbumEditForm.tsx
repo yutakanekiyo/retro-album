@@ -13,6 +13,39 @@ type Album = {
   song_artist: string | null
 }
 
+function FormRow({
+  label,
+  name,
+  defaultValue,
+  placeholder,
+  required,
+  last,
+}: {
+  label: string
+  name: string
+  defaultValue?: string
+  placeholder?: string
+  required?: boolean
+  last?: boolean
+}) {
+  return (
+    <div
+      className="flex items-center px-4"
+      style={{ minHeight: 48, borderBottom: last ? 'none' : '1px solid #F2F2F7' }}
+    >
+      <label className="text-sm flex-shrink-0 w-28" style={{ color: '#000000' }}>{label}</label>
+      <input
+        name={name}
+        defaultValue={defaultValue ?? ''}
+        placeholder={placeholder}
+        required={required}
+        className="flex-1 focus:outline-none text-right text-sm"
+        style={{ color: '#000000', background: 'transparent' }}
+      />
+    </div>
+  )
+}
+
 export default function AlbumEditForm({ album }: { album: Album }) {
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -42,55 +75,39 @@ export default function AlbumEditForm({ album }: { album: Album }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-xs text-[#8E8E93]">タイトル</label>
-          <input
-            name="title"
-            defaultValue={album.title}
-            required
-            className="admin-input w-full"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs text-[#8E8E93]">説明（任意）</label>
-          <input
-            name="description"
-            defaultValue={album.description ?? ''}
-            className="admin-input w-full"
-          />
-        </div>
-      </div>
-      {/* レコードセクション情報 */}
-      <div className="border-t border-[#E5E5EA] pt-3 space-y-3">
-        <p className="text-xs font-semibold text-[#007AFF]">レコードセクション</p>
-        <div>
-          <label className="mb-1 block text-xs text-[#8E8E93]">曲名</label>
-          <input name="song_title" defaultValue={album.song_title ?? ''} className="admin-input w-full" placeholder="例: ひとつだけ" />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs text-[#8E8E93]">アーティスト名</label>
-          <input name="song_artist" defaultValue={album.song_artist ?? ''} className="admin-input w-full" placeholder="例: 矢野顕子" />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs text-[#8E8E93]">ジャケ写 URL</label>
-          <input name="jacket_url" defaultValue={album.jacket_url ?? ''} className="admin-input w-full" placeholder="https://..." />
-          {album.jacket_url && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={album.jacket_url} alt="" className="mt-2 h-16 w-16 rounded-full object-cover" />
-          )}
-        </div>
-      </div>
+    <form onSubmit={handleSubmit}>
+      <FormRow label="タイトル" name="title" defaultValue={album.title} required />
+      <FormRow label="説明" name="description" defaultValue={album.description ?? ''} placeholder="任意" />
 
-      {error && <p className="text-xs text-red-400">{error}</p>}
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded bg-[#007AFF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0066DD] disabled:opacity-50 transition-colors"
-      >
-        {loading ? '保存中...' : saved ? '✓ 保存しました' : '保存'}
-      </button>
+      {/* セパレーターとレコードセクション */}
+      <p className="px-4 pt-4 pb-2 text-xs uppercase tracking-wide" style={{ color: '#8E8E93', borderTop: '1px solid #F2F2F7' }}>
+        レコードセクション
+      </p>
+      <FormRow label="曲名" name="song_title" defaultValue={album.song_title ?? ''} placeholder="例: ひとつだけ" />
+      <FormRow label="アーティスト" name="song_artist" defaultValue={album.song_artist ?? ''} placeholder="例: 矢野顕子" />
+      <FormRow label="ジャケ写 URL" name="jacket_url" defaultValue={album.jacket_url ?? ''} placeholder="https://..." last />
+
+      {album.jacket_url && (
+        <div className="px-4 pb-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={album.jacket_url} alt="" className="h-14 w-14 rounded-full object-cover" />
+        </div>
+      )}
+
+      {error && (
+        <p className="px-4 py-2 text-xs text-center" style={{ color: '#FF3B30' }}>{error}</p>
+      )}
+
+      <div className="px-4 py-4" style={{ borderTop: '1px solid #F2F2F7' }}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-xl text-sm font-semibold transition-opacity active:opacity-70 disabled:opacity-50"
+          style={{ background: saved ? '#34C759' : '#6B5340', color: '#FFFFFF' }}
+        >
+          {loading ? '保存中...' : saved ? '✓ 保存しました' : '保存'}
+        </button>
+      </div>
     </form>
   )
 }

@@ -33,7 +33,7 @@ export default function EditUsernameButton({ userId, currentUsername }: Props) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-[#8E8E93] hover:text-[#007AFF] transition-colors"
+        className="text-xs text-[#8E8E93] hover:text-[#6B5340] transition-colors"
         title="ユーザー名を変更"
       >
         {currentUsername} ✎
@@ -54,7 +54,7 @@ export default function EditUsernameButton({ userId, currentUsername }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="text-xs text-[#007AFF] hover:text-[#0066DD] disabled:opacity-50"
+        className="text-xs text-[#6B5340] hover:text-[#5A4535] disabled:opacity-50"
       >
         {loading ? '…' : '保存'}
       </button>
