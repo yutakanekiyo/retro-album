@@ -24,7 +24,7 @@ export default async function LoginPage() {
                 fontSize: 48,
                 color: '#000000',
                 letterSpacing: '0.02em',
-                fontWeight: 500,
+                fontWeight: 700,
               }}
             >
               Replay.
