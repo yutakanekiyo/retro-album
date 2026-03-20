@@ -25,7 +25,7 @@ export default async function AdminAuthPage() {
         <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>
           管理者ポータル
         </h1>
-        <p className="mt-1 text-sm" style={{ color: '#8E8E93' }}>Retro Album</p>
+        <p className="mt-1 text-sm" style={{ color: '#8E8E93' }}>Replay.</p>
       </div>
 
       <AdminAuthForm />

@@ -1,6 +1,6 @@
 {
-  "name": "Retro Album",
-  "short_name": "Retro Album",
+  "name": "Replay.",
+  "short_name": "Replay.",
   "description": "あなただけの思い出アルバム",
   "start_url": "/album",
   "scope": "/",

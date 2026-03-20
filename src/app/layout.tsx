@@ -33,14 +33,14 @@ const playfair = Playfair_Display({
 
 
 export const metadata: Metadata = {
-  title: 'Retro Album',
+  title: 'Replay.',
   description: 'あなただけの思い出アルバム',
   manifest: '/manifest.json',
   // iOS PWA
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Retro Album',
+    title: 'Replay.',
     startupImage: [
       // iPhone 14 Pro Max
       { url: '/apple-icon', media: '(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)' },
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   // OGP
   openGraph: {
-    title: 'Retro Album',
+    title: 'Replay.',
     description: 'あなただけの思い出アルバム',
     type: 'website',
   },

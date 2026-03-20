@@ -21,13 +21,13 @@ export default async function LoginPage() {
             <h1
               className="font-display block"
               style={{
-                fontSize: 34,
+                fontSize: 48,
                 color: '#000000',
-                letterSpacing: '0.04em',
-                fontWeight: 700,
+                letterSpacing: '0.02em',
+                fontWeight: 500,
               }}
             >
-              Retro Album
+              Replay.
             </h1>
             <p
               className="mt-1"
