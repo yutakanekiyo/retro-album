@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Noto_Serif_JP, Special_Elite, Caveat, Playfair_Display, Inter } from 'next/font/google'
+import { Noto_Serif_JP, Special_Elite, Caveat, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration'
 
@@ -31,11 +31,6 @@ const playfair = Playfair_Display({
   display: 'swap',
 })
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'Retro Album',
@@ -84,7 +79,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSerifJP.variable} ${specialElite.variable} ${caveat.variable} ${playfair.variable} ${inter.variable} film-grain vignette`}>
+      <body className={`${notoSerifJP.variable} ${specialElite.variable} ${caveat.variable} ${playfair.variable} film-grain vignette`}>
         <ServiceWorkerRegistration />
         {children}
       </body>
