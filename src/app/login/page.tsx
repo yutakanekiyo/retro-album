@@ -31,9 +31,9 @@ export default async function LoginPage() {
             </h1>
             <p
               className="mt-1"
-              style={{ fontSize: 14, color: '#8E8E93' }}
+              style={{ fontSize: 14, color: '#3A3A3C' }}
             >
-              思い出のかけら
+              Anfield F.C. 22のみんなへ送る、あなたのためのアルバム。
             </p>
           </div>
 
