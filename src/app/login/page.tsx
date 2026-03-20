@@ -23,41 +23,39 @@ export default async function LoginPage() {
         {/* メインコンテンツ */}
         <div className="w-full max-w-sm">
           {/* アプリ名 */}
-          <div className="mb-8 text-center">
-            {/* ステッカー＋タイトル */}
-            <div className="relative inline-block">
-              {/* ステッカー3枚・逆三角形配置（テキストの背面） */}
-              {/* 上左 */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 96, top: -80, left: '15%', transform: 'translateX(-50%) rotate(-14deg)', zIndex: 0 }} />
-              {/* 上右 */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 96, top: -80, left: '85%', transform: 'translateX(-50%) rotate(16deg)', zIndex: 0 }} />
-              {/* 下中央 */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 90, top: -14, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
+          <div className="relative mb-8 text-center">
+            {/* ステッカー3枚・逆三角形配置（最背面） */}
+            {/* 上左 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
+              style={{ width: 96, top: -80, left: '15%', transform: 'translateX(-50%) rotate(-14deg)', zIndex: 0 }} />
+            {/* 上右 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
+              style={{ width: 96, top: -80, left: '85%', transform: 'translateX(-50%) rotate(16deg)', zIndex: 0 }} />
+            {/* 下中央 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
+              style={{ width: 90, top: -14, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
 
-              <h1
-                className="font-display block relative"
-                style={{
-                  fontSize: 64,
-                  color: '#000000',
-                  letterSpacing: '0.02em',
-                  fontWeight: 500,
-                  zIndex: 1,
-                  WebkitTextStroke: '6px #F2F2F7',
-                  paintOrder: 'stroke fill',
-                }}
-              >
-                Replay.
-              </h1>
-            </div>
+            {/* テキスト（ステッカーより前面） */}
+            <h1
+              className="font-display block relative"
+              style={{
+                fontSize: 64,
+                color: '#000000',
+                letterSpacing: '0.02em',
+                fontWeight: 500,
+                zIndex: 1,
+                WebkitTextStroke: '6px #F2F2F7',
+                paintOrder: 'stroke fill',
+              }}
+            >
+              Replay.
+            </h1>
             <p
-              className="mt-1"
-              style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500 }}
+              className="relative mt-1"
+              style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500, zIndex: 1 }}
             >
               Anfield F.C. 22へ送る、あなただけのアルバム。
             </p>
