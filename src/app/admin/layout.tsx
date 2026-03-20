@@ -18,13 +18,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if ((profile as { role: string } | null)?.role !== 'admin') redirect('/album')
 
   return (
-    <div className="min-h-screen bg-[#0f0a04] text-[#f5e6d0]">
+    <div className="min-h-screen bg-[#F2F2F7] text-[#000000]">
       {/* 管理者ヘッダー */}
-      <header className="border-b border-[#8b6340]/30 bg-[#1a1208] px-6 py-3">
+      <header className="border-b border-[#E5E5EA] bg-white px-6 py-3">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-lg">🎞️</span>
-            <Link href="/admin" className="text-sm font-bold tracking-widest text-[#d4843a] uppercase">
+            <Link href="/admin" className="text-sm font-bold tracking-widest text-[#007AFF] uppercase">
               Admin Panel
             </Link>
           </div>

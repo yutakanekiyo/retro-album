@@ -36,8 +36,8 @@ export default async function AdminPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#f5e6d0]">先輩一覧</h1>
-        <p className="mt-1 text-sm text-[#8b6340]">
+        <h1 className="text-2xl font-bold text-[#000000]">先輩一覧</h1>
+        <p className="mt-1 text-sm text-[#8E8E93]">
           {senpaiUsers.length} 人のアカウント
         </p>
       </div>
@@ -46,9 +46,9 @@ export default async function AdminPage() {
       <CreateUserForm />
 
       {/* ユーザーリスト */}
-      <div className="divide-y divide-[#8b6340]/20 rounded-lg border border-[#8b6340]/20 bg-[#1a1208]">
+      <div className="divide-y divide-[#E5E5EA] rounded-lg border border-[#E5E5EA] bg-white">
         {senpaiUsers.length === 0 ? (
-          <div className="p-8 text-center text-sm text-[#8b6340]">
+          <div className="p-8 text-center text-sm text-[#8E8E93]">
             まだアカウントがありません。上のボタンから追加してください。
           </div>
         ) : (
@@ -59,22 +59,22 @@ export default async function AdminPage() {
             return (
               <div key={user.id} className="flex items-center justify-between px-5 py-4">
                 <div>
-                  <p className="font-semibold text-[#f5e6d0]">{displayName}</p>
-                  <p className="mt-0.5 text-xs text-[#8b6340]">
+                  <p className="font-semibold text-[#000000]">{displayName}</p>
+                  <p className="mt-0.5 text-xs text-[#8E8E93]">
                     ユーザー名:{' '}
                     <EditUsernameButton userId={user.id} currentUsername={username} />
                   </p>
                   {album ? (
-                    <p className="mt-0.5 text-xs text-[#d4843a]">
+                    <p className="mt-0.5 text-xs text-[#007AFF]">
                       📔 {album.title}
                     </p>
                   ) : (
-                    <p className="mt-0.5 text-xs text-[#8b6340]/60">アルバム未作成</p>
+                    <p className="mt-0.5 text-xs text-[#AEAEB2]">アルバム未作成</p>
                   )}
                 </div>
                 <Link
                   href={`/admin/albums/${user.id}`}
-                  className="rounded border border-[#8b6340]/40 px-3 py-1.5 text-xs text-[#8b6340] hover:border-[#d4843a] hover:text-[#d4843a] transition-colors"
+                  className="rounded border border-[#E5E5EA] px-3 py-1.5 text-xs text-[#8E8E93] hover:border-[#007AFF] hover:text-[#007AFF] transition-colors"
                 >
                   管理 →
                 </Link>

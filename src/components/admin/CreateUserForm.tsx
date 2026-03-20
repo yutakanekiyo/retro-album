@@ -33,7 +33,7 @@ export default function CreateUserForm() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="rounded bg-[#d4843a] px-4 py-2 text-sm font-semibold text-[#1a1208] hover:bg-[#e8a85a] transition-colors"
+        className="rounded bg-[#007AFF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0066DD] transition-colors"
       >
         + 先輩を追加
       </button>
@@ -43,9 +43,9 @@ export default function CreateUserForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-[#8b6340]/30 bg-[#2d1a0a] p-5 space-y-3"
+      className="rounded-lg border border-[#E5E5EA] bg-white p-5 space-y-3"
     >
-      <h3 className="text-sm font-semibold text-[#d4843a]">新しい先輩アカウントを作成</h3>
+      <h3 className="text-sm font-semibold text-[#000000]">新しい先輩アカウントを作成</h3>
       <div className="grid gap-3 sm:grid-cols-3">
         <input
           name="displayName"
@@ -74,14 +74,14 @@ export default function CreateUserForm() {
         <button
           type="submit"
           disabled={loading}
-          className="rounded bg-[#d4843a] px-4 py-1.5 text-sm font-semibold text-[#1a1208] hover:bg-[#e8a85a] disabled:opacity-50 transition-colors"
+          className="rounded bg-[#007AFF] px-4 py-1.5 text-sm font-semibold text-white hover:bg-[#0066DD] disabled:opacity-50 transition-colors"
         >
           {loading ? '作成中...' : '作成'}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded border border-[#8b6340]/40 px-4 py-1.5 text-sm text-[#8b6340] hover:text-[#f5e6d0] transition-colors"
+          className="rounded border border-[#E5E5EA] px-4 py-1.5 text-sm text-[#8E8E93] hover:text-[#000000] transition-colors"
         >
           キャンセル
         </button>

@@ -1,7 +1,16 @@
-const CACHE_NAME = 'retro-album-v1'
+export const dynamic = 'force-dynamic'
+
+export async function GET() {
+  // Vercel デプロイごとに変わるコミットハッシュをキャッシュバージョンに使う
+  const version =
+    process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ??
+    process.env.VERCEL_DEPLOYMENT_ID?.slice(0, 8) ??
+    Date.now().toString()
+
+  const sw = `
+const CACHE_NAME = 'retro-album-${version}'
 const APP_SHELL = ['/', '/login', '/album']
 
-// インストール: アプリシェルをキャッシュ
 self.addEventListener('install', (event) => {
   self.skipWaiting()
   event.waitUntil(
@@ -9,7 +18,6 @@ self.addEventListener('install', (event) => {
   )
 })
 
-// アクティベート: 古いキャッシュを削除
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -24,7 +32,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
 
-  // Supabase API・Next.js内部・HMRはキャッシュしない
   if (
     url.hostname.includes('supabase.co') ||
     url.pathname.startsWith('/_next/webpack-hmr') ||
@@ -34,7 +41,6 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // 画像・音声・動画 → キャッシュファースト（一度見た写真はオフラインでも表示）
   if (
     event.request.destination === 'image' ||
     event.request.destination === 'audio' ||
@@ -57,7 +63,6 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // JS・CSS・フォント → キャッシュファースト
   if (
     event.request.destination === 'script' ||
     event.request.destination === 'style' ||
@@ -75,7 +80,6 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // ナビゲーション → ネットワークファースト（失敗時はキャッシュ）
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(async () => {
@@ -85,3 +89,13 @@ self.addEventListener('fetch', (event) => {
     )
   }
 })
+`.trim()
+
+  return new Response(sw, {
+    headers: {
+      'Content-Type': 'application/javascript; charset=utf-8',
+      'Service-Worker-Allowed': '/',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+    },
+  })
+}

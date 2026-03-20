@@ -96,21 +96,6 @@ body {
   animation: grain 0.8s steps(2) infinite;
 }
 
-/* =============================================
-   ビネット（全画面）
-   ============================================= */
-.vignette::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    rgba(0, 0, 0, 0.65) 100%
-  );
-  pointer-events: none;
-  z-index: 9998;
-}
 
 /* =============================================
    写真フィルター（フィルム風・色褪せ加工）
@@ -229,15 +214,15 @@ body {
    ============================================= */
 .admin-input {
   width: 100%;
-  border-radius: 0.25rem;
-  background: #0f0a04;
-  border: 1px solid rgba(139, 99, 64, 0.4);
+  border-radius: 0.5rem;
+  background: #FFFFFF;
+  border: 1px solid #E5E5EA;
   padding: 0.5rem 0.75rem;
-  color: #f5e6d0;
+  color: #000000;
   font-size: 0.875rem;
   outline: none;
   transition: border-color 0.15s;
 }
-.admin-input:focus { border-color: #d4843a; }
-.admin-input::placeholder { color: rgba(139, 99, 64, 0.5); }
+.admin-input:focus { border-color: #007AFF; }
+.admin-input::placeholder { color: #AEAEB2; }
 .admin-input:disabled { opacity: 0.5; }

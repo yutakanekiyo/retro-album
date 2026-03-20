@@ -84,46 +84,46 @@ export default async function AlbumManagePage({ params }: Props) {
   return (
     <div className="space-y-8">
       {/* パンくず */}
-      <div className="flex items-center gap-2 text-sm text-[#8b6340]">
-        <Link href="/admin" className="hover:text-[#d4843a] transition-colors">
+      <div className="flex items-center gap-2 text-sm text-[#8E8E93]">
+        <Link href="/admin" className="hover:text-[#007AFF] transition-colors">
           先輩一覧
         </Link>
         <span>›</span>
-        <span className="text-[#f5e6d0]">{displayName}</span>
+        <span className="text-[#000000]">{displayName}</span>
       </div>
 
       <div>
-        <h1 className="text-2xl font-bold text-[#f5e6d0]">{displayName}</h1>
-        <p className="text-xs text-[#8b6340]">{user.email}</p>
+        <h1 className="text-2xl font-bold text-[#000000]">{displayName}</h1>
+        <p className="text-xs text-[#8E8E93]">{user.email}</p>
       </div>
 
       {/* アルバム作成 or 編集 */}
       {!album ? (
-        <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-3">
-          <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">アルバムを作成</h2>
+        <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
+          <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">アルバムを作成</h2>
           <CreateAlbumForm userId={userId} />
         </section>
       ) : (
         <>
           {/* アルバム情報編集 */}
-          <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-3">
-            <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">アルバム情報</h2>
+          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
+            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">アルバム情報</h2>
             <AlbumEditForm album={album} />
           </section>
 
           {/* BGM */}
-          <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-3">
-            <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">BGM</h2>
+          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-3">
+            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">BGM</h2>
             <BgmUploader albumId={album.id} currentBgmPath={album.bgm_url} />
           </section>
 
           {/* 写真アップロード */}
-          <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-4">
+          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">
+              <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">
                 写真・動画を追加
               </h2>
-              <span className="text-xs text-[#8b6340]">{items.length} 件</span>
+              <span className="text-xs text-[#8E8E93]">{items.length} 件</span>
             </div>
             <PhotoUploader
               albumId={album.id}
@@ -133,8 +133,8 @@ export default async function AlbumManagePage({ params }: Props) {
           </section>
 
           {/* アルバムアイテム一覧 */}
-          <section className="rounded-lg border border-[#8b6340]/20 bg-[#1a1208] p-6 space-y-4">
-            <h2 className="text-sm font-semibold text-[#d4843a] tracking-wide">
+          <section className="rounded-lg border border-[#E5E5EA] bg-white p-6 space-y-4">
+            <h2 className="text-sm font-semibold text-[#007AFF] tracking-wide">
               アルバム内容（↑↓で並び替え）
             </h2>
             <AlbumItemList items={items} />

@@ -33,7 +33,7 @@ export default function EditUsernameButton({ userId, currentUsername }: Props) {
     return (
       <button
         onClick={() => setEditing(true)}
-        className="text-xs text-[#8b6340] hover:text-[#d4843a] transition-colors"
+        className="text-xs text-[#8E8E93] hover:text-[#007AFF] transition-colors"
         title="ユーザー名を変更"
       >
         {currentUsername} ✎
@@ -54,14 +54,14 @@ export default function EditUsernameButton({ userId, currentUsername }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="text-xs text-[#d4843a] hover:text-[#e8a85a] disabled:opacity-50"
+        className="text-xs text-[#007AFF] hover:text-[#0066DD] disabled:opacity-50"
       >
         {loading ? '…' : '保存'}
       </button>
       <button
         type="button"
         onClick={() => { setEditing(false); setValue(currentUsername) }}
-        className="text-xs text-[#8b6340] hover:text-[#f5e6d0]"
+        className="text-xs text-[#8E8E93] hover:text-[#000000]"
       >
         取消
       </button>

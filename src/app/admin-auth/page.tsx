@@ -19,23 +19,23 @@ export default async function AdminAuthPage() {
   return (
     <div
       className="flex min-h-dvh flex-col items-center justify-center px-6"
-      style={{ background: '#0f0a04' }}
+      style={{ background: '#F2F2F7' }}
     >
       {/* ロゴ */}
       <div className="mb-8 text-center">
-        <p className="text-xs tracking-widest uppercase mb-2" style={{ color: '#8b6340' }}>
+        <p className="text-xs tracking-widest uppercase mb-2" style={{ color: '#8E8E93' }}>
           Retro Album
         </p>
-        <h1 className="text-xl font-bold tracking-wide" style={{ color: '#d4843a' }}>
+        <h1 className="text-xl font-bold tracking-wide" style={{ color: '#000000' }}>
           管理者ポータル
         </h1>
       </div>
 
       <AdminAuthForm />
 
-      <p className="mt-8 text-xs" style={{ color: '#4a3520' }}>
+      <p className="mt-8 text-xs" style={{ color: '#AEAEB2' }}>
         先輩のアルバムを見る方は
-        <a href="/login" className="ml-1 underline hover:text-[#8b6340] transition-colors" style={{ color: '#6b4530' }}>
+        <a href="/login" className="ml-1 underline hover:text-[#007AFF] transition-colors" style={{ color: '#8E8E93' }}>
           こちら
         </a>
       </p>

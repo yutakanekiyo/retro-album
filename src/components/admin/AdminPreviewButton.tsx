@@ -14,7 +14,7 @@ export default function AdminPreviewButton() {
       <Link
         href={`/admin/preview/${userId}`}
         target="_blank"
-        className="rounded border border-[#8b6340]/40 px-3 py-1.5 text-xs text-[#d4843a] hover:border-[#d4843a] hover:bg-[#d4843a]/10 transition-colors"
+        className="rounded border border-[#E5E5EA] px-3 py-1.5 text-xs text-[#007AFF] hover:border-[#007AFF] hover:bg-[#007AFF]/10 transition-colors"
       >
         プレビュー ↗
       </Link>

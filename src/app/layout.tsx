@@ -79,7 +79,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${notoSerifJP.variable} ${specialElite.variable} ${caveat.variable} ${playfair.variable} film-grain vignette`}>
+      <body className={`${notoSerifJP.variable} ${specialElite.variable} ${caveat.variable} ${playfair.variable} film-grain`}>
         <ServiceWorkerRegistration />
         {children}
       </body>

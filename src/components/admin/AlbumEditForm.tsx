@@ -45,7 +45,7 @@ export default function AlbumEditForm({ album }: { album: Album }) {
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-[#8b6340]">タイトル</label>
+          <label className="mb-1 block text-xs text-[#8E8E93]">タイトル</label>
           <input
             name="title"
             defaultValue={album.title}
@@ -54,7 +54,7 @@ export default function AlbumEditForm({ album }: { album: Album }) {
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[#8b6340]">説明（任意）</label>
+          <label className="mb-1 block text-xs text-[#8E8E93]">説明（任意）</label>
           <input
             name="description"
             defaultValue={album.description ?? ''}
@@ -63,18 +63,18 @@ export default function AlbumEditForm({ album }: { album: Album }) {
         </div>
       </div>
       {/* レコードセクション情報 */}
-      <div className="border-t border-[#8b6340]/20 pt-3 space-y-3">
-        <p className="text-xs font-semibold text-[#d4843a]">レコードセクション</p>
+      <div className="border-t border-[#E5E5EA] pt-3 space-y-3">
+        <p className="text-xs font-semibold text-[#007AFF]">レコードセクション</p>
         <div>
-          <label className="mb-1 block text-xs text-[#8b6340]">曲名</label>
+          <label className="mb-1 block text-xs text-[#8E8E93]">曲名</label>
           <input name="song_title" defaultValue={album.song_title ?? ''} className="admin-input w-full" placeholder="例: ひとつだけ" />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[#8b6340]">アーティスト名</label>
+          <label className="mb-1 block text-xs text-[#8E8E93]">アーティスト名</label>
           <input name="song_artist" defaultValue={album.song_artist ?? ''} className="admin-input w-full" placeholder="例: 矢野顕子" />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[#8b6340]">ジャケ写 URL</label>
+          <label className="mb-1 block text-xs text-[#8E8E93]">ジャケ写 URL</label>
           <input name="jacket_url" defaultValue={album.jacket_url ?? ''} className="admin-input w-full" placeholder="https://..." />
           {album.jacket_url && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -87,7 +87,7 @@ export default function AlbumEditForm({ album }: { album: Album }) {
       <button
         type="submit"
         disabled={loading}
-        className="rounded bg-[#d4843a] px-4 py-2 text-sm font-semibold text-[#1a1208] hover:bg-[#e8a85a] disabled:opacity-50 transition-colors"
+        className="rounded bg-[#007AFF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0066DD] disabled:opacity-50 transition-colors"
       >
         {loading ? '保存中...' : saved ? '✓ 保存しました' : '保存'}
       </button>

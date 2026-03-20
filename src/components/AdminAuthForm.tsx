@@ -9,11 +9,11 @@ import { usernameToEmail } from '@/lib/usernameToEmail'
 type Tab = 'login' | 'register'
 
 const inputStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.07)',
-  border: '1px solid rgba(139,99,64,0.4)',
+  background: '#FFFFFF',
+  border: '1px solid #E5E5EA',
   borderRadius: 10,
   padding: '12px 14px',
-  color: '#f5e6d0',
+  color: '#000000',
   fontSize: 14,
   width: '100%',
   outline: 'none',
@@ -64,15 +64,15 @@ export default function AdminAuthForm() {
   return (
     <div className="w-full max-w-sm">
       {/* タブ */}
-      <div className="flex mb-6 rounded-lg overflow-hidden border border-[#8b6340]/30">
+      <div className="flex mb-6 rounded-lg overflow-hidden border border-[#E5E5EA]">
         {(['login', 'register'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => { setTab(t); setError(null) }}
             className="flex-1 py-2 text-sm transition-colors"
             style={{
-              background: tab === t ? '#d4843a' : 'transparent',
-              color: tab === t ? '#1a1208' : '#8b6340',
+              background: tab === t ? '#007AFF' : '#FFFFFF',
+              color: tab === t ? '#FFFFFF' : '#8E8E93',
               fontWeight: tab === t ? 600 : 400,
             }}
           >
@@ -83,7 +83,7 @@ export default function AdminAuthForm() {
 
       <form onSubmit={tab === 'login' ? handleLogin : handleRegister} className="space-y-4">
         <div>
-          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8b6340' }}>
+          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8E8E93' }}>
             ユーザー名 / メールアドレス
           </label>
           <input
@@ -94,12 +94,12 @@ export default function AdminAuthForm() {
             autoComplete="username"
             placeholder="username または email"
             style={inputStyle}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#d4843a' }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(139,99,64,0.4)' }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
           />
         </div>
         <div>
-          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8b6340' }}>
+          <label className="block mb-1.5 text-xs tracking-wider uppercase" style={{ color: '#8E8E93' }}>
             パスワード
           </label>
           <input
@@ -111,8 +111,8 @@ export default function AdminAuthForm() {
             placeholder="••••••••"
             minLength={tab === 'register' ? 8 : undefined}
             style={inputStyle}
-            onFocus={(e) => { e.currentTarget.style.borderColor = '#d4843a' }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(139,99,64,0.4)' }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#007AFF' }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = '#E5E5EA' }}
           />
         </div>
 
@@ -124,7 +124,7 @@ export default function AdminAuthForm() {
           type="submit"
           disabled={loading}
           className="w-full py-3 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
-          style={{ background: '#d4843a', color: '#1a1208' }}
+          style={{ background: '#007AFF', color: '#FFFFFF' }}
         >
           {loading ? '処理中...' : tab === 'login' ? '管理画面へ' : 'アカウントを作成'}
         </button>
