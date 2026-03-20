@@ -12,7 +12,7 @@ export default async function LoginPage() {
     <PageTransition>
       <div
         className="flex min-h-dvh flex-col items-center justify-center px-6"
-        style={{ background: '#FFFFFF' }}
+        style={{ background: '#F2F2F7' }}
       >
         {/* メインコンテンツ */}
         <div className="w-full max-w-sm">
