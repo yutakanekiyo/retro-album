@@ -131,7 +131,8 @@ export async function saveAlbumItem(
   filePath: string,
   type: 'photo' | 'video',
   caption: string,
-  sortOrder: number
+  sortOrder: number,
+  thumbnailPath?: string | null,
 ) {
   await assertAdmin()
   const admin = createAdminClient()
@@ -142,6 +143,7 @@ export async function saveAlbumItem(
       album_id: albumId,
       type,
       file_url: filePath,
+      thumbnail_url: thumbnailPath ?? null,
       caption: caption || null,
       sort_order: sortOrder,
     })

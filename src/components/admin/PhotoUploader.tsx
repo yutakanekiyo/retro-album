@@ -14,6 +14,31 @@ type UploadFile = {
   type: 'photo' | 'video'
 }
 
+// ─── ブラウザ側リサイズ（Canvas API）───────────────────────────────────────
+async function resizeImage(file: File, maxWidth: number, quality: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const scale  = img.width > maxWidth ? maxWidth / img.width : 1
+      const canvas = document.createElement('canvas')
+      canvas.width  = Math.round(img.width  * scale)
+      canvas.height = Math.round(img.height * scale)
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return reject(new Error('Canvas context unavailable'))
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob(
+        (blob) => blob ? resolve(blob) : reject(new Error('toBlob failed')),
+        'image/jpeg',
+        quality,
+      )
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image load failed')) }
+    img.src = url
+  })
+}
+
 type Props = {
   albumId: string
   userId: string
@@ -67,19 +92,32 @@ export default function PhotoUploader({ albumId, userId, nextSortOrder }: Props)
       )
 
       try {
-        // 署名付きアップロードURL取得
+        const isPhoto = uploadFile.type === 'photo'
+
+        // 写真はリサイズしてから送信（動画はそのまま）
+        let fullBlob: Blob   = uploadFile.file
+        let thumbBlob: Blob | null = null
+
+        if (isPhoto) {
+          // フルスクリーン用: 1200px JPEG 85%
+          fullBlob  = await resizeImage(uploadFile.file, 1200, 0.85)
+          // サムネイル用: 800px JPEG 80%
+          thumbBlob = await resizeImage(uploadFile.file, 800, 0.80)
+        }
+
+        // フルサイズの署名付きURL取得
         const { signedUrl, path } = await getSignedUploadUrl(
           userId,
           uploadFile.file.name,
           uploadFile.type
         )
 
-        // XHR でアップロード（プログレス対応）
+        // フルサイズをアップロード（XHR でプログレス対応）
         await new Promise<void>((resolve, reject) => {
           const xhr = new XMLHttpRequest()
           xhr.upload.onprogress = (e) => {
             if (e.lengthComputable) {
-              const progress = Math.round((e.loaded / e.total) * 100)
+              const progress = Math.round((e.loaded / e.total) * (isPhoto ? 60 : 100))
               setFiles((prev) =>
                 prev.map((f) => (f.id === uploadFile.id ? { ...f, progress } : f))
               )
@@ -88,9 +126,37 @@ export default function PhotoUploader({ albumId, userId, nextSortOrder }: Props)
           xhr.onload = () => (xhr.status === 200 ? resolve() : reject(new Error(`HTTP ${xhr.status}`)))
           xhr.onerror = () => reject(new Error('Upload failed'))
           xhr.open('PUT', signedUrl)
-          xhr.setRequestHeader('Content-Type', uploadFile.file.type)
-          xhr.send(uploadFile.file)
+          xhr.setRequestHeader('Content-Type', 'image/jpeg')
+          xhr.send(fullBlob)
         })
+
+        // サムネイルをアップロード（写真のみ）
+        let thumbPath: string | null = null
+        if (isPhoto && thumbBlob) {
+          const thumbName = uploadFile.file.name.replace(/\.[^.]+$/, '_thumb.jpg')
+          const { signedUrl: thumbSignedUrl, path: tp } = await getSignedUploadUrl(
+            userId,
+            thumbName,
+            'photo'
+          )
+          thumbPath = tp
+          await new Promise<void>((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+            xhr.upload.onprogress = (e) => {
+              if (e.lengthComputable) {
+                const progress = 60 + Math.round((e.loaded / e.total) * 35)
+                setFiles((prev) =>
+                  prev.map((f) => (f.id === uploadFile.id ? { ...f, progress } : f))
+                )
+              }
+            }
+            xhr.onload = () => (xhr.status === 200 ? resolve() : reject(new Error(`HTTP ${xhr.status}`)))
+            xhr.onerror = () => reject(new Error('Thumbnail upload failed'))
+            xhr.open('PUT', thumbSignedUrl)
+            xhr.setRequestHeader('Content-Type', 'image/jpeg')
+            xhr.send(thumbBlob!)
+          })
+        }
 
         // DBに保存
         await saveAlbumItem(
@@ -98,7 +164,8 @@ export default function PhotoUploader({ albumId, userId, nextSortOrder }: Props)
           path,
           uploadFile.type,
           uploadFile.caption,
-          nextSortOrder + i
+          nextSortOrder + i,
+          thumbPath,
         )
 
         setFiles((prev) =>
