@@ -21,10 +21,10 @@ export default async function LoginPage() {
             <h1
               className="font-display block"
               style={{
-                fontSize: 48,
+                fontSize: 64,
                 color: '#000000',
                 letterSpacing: '0.02em',
-                fontWeight: 700,
+                fontWeight: 500,
               }}
             >
               Replay.
