@@ -33,7 +33,7 @@ export default async function LoginPage() {
               className="mt-1"
               style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500 }}
             >
-              Anfield F.C. 22のみんなへ送る、あなたのためのアルバム。
+              Anfield F.C. 22へ送る、あなただけのアルバム。
             </p>
           </div>
 
