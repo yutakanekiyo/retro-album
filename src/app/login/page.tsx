@@ -26,16 +26,19 @@ export default async function LoginPage() {
           <div className="mb-8 text-center">
             {/* ステッカー＋タイトル */}
             <div className="relative inline-block">
-              {/* ステッカー3枚（テキストの背面） */}
+              {/* ステッカー3枚・逆三角形配置（テキストの背面） */}
+              {/* 上左 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 68, top: -20, left: '10%', transform: 'rotate(-15deg)', zIndex: 0 }} />
+                style={{ width: 66, top: -16, left: -12, transform: 'rotate(-14deg)', zIndex: 0 }} />
+              {/* 上右 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 60, top: -10, left: '45%', transform: 'translateX(-50%) rotate(8deg)', zIndex: 0 }} />
+                style={{ width: 66, top: -16, right: -12, transform: 'rotate(16deg)', zIndex: 0 }} />
+              {/* 下中央 */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
-                style={{ width: 64, top: -18, right: '8%', transform: 'rotate(20deg)', zIndex: 0 }} />
+                style={{ width: 62, bottom: -16, left: '50%', transform: 'translateX(-50%) rotate(-8deg)', zIndex: 0 }} />
 
               <h1
                 className="font-display block relative"
