@@ -395,7 +395,7 @@ function PhotoCard({
         <img
           src={TORN_PAPER_ASSETS[tornOverIdx]} alt="" loading="lazy"
           style={{
-            position: 'absolute', zIndex: 3, height: 'auto', pointerEvents: 'none',
+            position: 'absolute', zIndex: -1, height: 'auto', pointerEvents: 'none',
             width: tornOverSide === 'bottom' ? '110%' : '55%',
             left: tornOverSide === 'bottom' ? '-5%' : undefined,
             right: tornOverSide === 'right' ? '-8%' : undefined,
@@ -532,7 +532,7 @@ function ScrapbookPageSection({
         // eslint-disable-next-line @next/next/no-img-element
         <img key={`tp-b-${i}`} src={p.src} alt="" loading="lazy"
           style={{
-            position: 'absolute', zIndex: 2, height: 'auto', pointerEvents: 'none',
+            position: 'absolute', zIndex: 0, height: 'auto', pointerEvents: 'none',
             top: `${p.top}%`, left: `${p.left}%`, width: p.width,
             transform: `rotate(${p.rotation}deg)`, opacity: p.opacity,
           }}
@@ -563,6 +563,23 @@ function ScrapbookPageSection({
           priority={isFirstPage}
         />
       ))}
+
+      {/* tap photo（最初のページのみ・最初の写真の右上に指が重なるよう配置） */}
+      {isFirstPage && positions[0] && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src="/assets/tap-photo.png" alt="" loading="eager"
+          style={{
+            position: 'absolute', height: 'auto', pointerEvents: 'none',
+            width: 300,
+            top: `${positions[0].topPct + 6}%`,
+            left: `${positions[0].leftPct + positions[0].widthPct * 0.55}%`,
+            transform: 'rotate(8deg)',
+            zIndex: 12,
+            opacity: 0.92,
+          }}
+        />
+      )}
 
       {/* 5. ステッカー（写真の上に重ねる） */}
       {stickerPlacements.map((s, i) => (
@@ -690,7 +707,20 @@ export default function ScrapbookView({ items, onPhotoClick, recordInfo, bgmPlay
       <div className="mx-auto max-w-md">
         {/* レコードセクション（先頭固定・スクロールで流れる） */}
         {recordInfo && (recordInfo.jacketUrl || recordInfo.songTitle || recordInfo.songArtist) && (
-          <RecordSection recordInfo={recordInfo} bgmPlaying={bgmPlaying} />
+          <div className="relative">
+            <RecordSection recordInfo={recordInfo} bgmPlaying={bgmPlaying} />
+            {/* SCROLL DOWN: overflow:hidden の外に出してセクションをまたいで表示 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/scroll.png" alt="" loading="lazy"
+              style={{
+                position: 'absolute', height: 'auto', pointerEvents: 'none',
+                width: 300, bottom: -140, left: '50%',
+                transform: 'translateX(-50%) rotate(-3deg)',
+                opacity: 0.88, zIndex: 30,
+              }}
+            />
+          </div>
         )}
         {placeholderHeight > 0 && (
           <div style={{ height: placeholderHeight }} aria-hidden="true" />
