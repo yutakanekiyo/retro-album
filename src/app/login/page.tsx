@@ -10,8 +10,9 @@ export default async function LoginPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (user) redirect('/album')
 
-  const stickerIndex = Math.floor(Math.random() * STICKER_COUNT) + 1
-  const stickerSrc = `/assets/stickers/s${stickerIndex}.png`
+  const stickers = Array.from({ length: 3 }, () =>
+    `/assets/stickers/s${Math.floor(Math.random() * STICKER_COUNT) + 1}.png`
+  )
 
   return (
     <PageTransition>
@@ -23,22 +24,19 @@ export default async function LoginPage() {
         <div className="w-full max-w-sm">
           {/* アプリ名 */}
           <div className="mb-8 text-center">
-            {/* ステッカー（タイトルに少し被る位置） */}
+            {/* ステッカー＋タイトル */}
             <div className="relative inline-block">
+              {/* ステッカー3枚（テキストの背面） */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={stickerSrc}
-                alt=""
-                aria-hidden
-                className="pointer-events-none absolute"
-                style={{
-                  width: 72,
-                  top: -36,
-                  left: '50%',
-                  transform: 'translateX(-50%) rotate(12deg)',
-                  zIndex: 10,
-                }}
-              />
+              <img src={stickers[0]} alt="" aria-hidden className="pointer-events-none absolute"
+                style={{ width: 68, top: -20, left: '10%', transform: 'rotate(-15deg)', zIndex: 0 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={stickers[1]} alt="" aria-hidden className="pointer-events-none absolute"
+                style={{ width: 60, top: -10, left: '45%', transform: 'translateX(-50%) rotate(8deg)', zIndex: 0 }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={stickers[2]} alt="" aria-hidden className="pointer-events-none absolute"
+                style={{ width: 64, top: -18, right: '8%', transform: 'rotate(20deg)', zIndex: 0 }} />
+
               <h1
                 className="font-display block relative"
                 style={{
@@ -46,6 +44,7 @@ export default async function LoginPage() {
                   color: '#000000',
                   letterSpacing: '0.02em',
                   fontWeight: 500,
+                  zIndex: 1,
                 }}
               >
                 Replay.
