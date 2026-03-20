@@ -40,6 +40,31 @@
   box-sizing: border-box;
 }
 
+/* フォーカス時の青いアウトラインを無効化 */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+}
+
+/* オートフィル時の青背景を無効化（Chrome/Safari） */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #F2F2F7 inset;
+  box-shadow: 0 0 0px 1000px #F2F2F7 inset;
+  -webkit-text-fill-color: #000000;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* タップハイライト無効化（iOS Safari） */
+input,
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
