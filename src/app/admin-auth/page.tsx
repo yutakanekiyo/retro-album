@@ -18,7 +18,7 @@ export default async function AdminAuthPage() {
   return (
     <div
       className="flex min-h-dvh flex-col items-center justify-center px-6"
-      style={{ background: '#F2F2F7' }}
+      style={{ background: '#FFFFFF' }}
     >
       {/* タイトル */}
       <div className="mb-8 text-center">

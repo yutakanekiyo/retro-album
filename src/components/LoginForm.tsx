@@ -45,67 +45,62 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* ユーザー名 row */}
-      <div className="flex items-center px-4" style={{ minHeight: 52, borderBottom: '1px solid #F2F2F7' }}>
-        <label style={{ fontSize: 13, color: '#000000', width: 96, flexShrink: 0 }}>
-          ユーザー名
-        </label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          autoComplete="username"
-          placeholder="username"
-          className="flex-1 focus:outline-none text-right"
-          style={{ fontSize: 15, color: '#000000', background: 'transparent' }}
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-3 p-4">
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+        autoComplete="username"
+        placeholder="ユーザー名"
+        className="w-full focus:outline-none"
+        style={{
+          background: '#F2F2F7',
+          border: 'none',
+          borderRadius: 10,
+          padding: '14px 16px',
+          fontSize: 15,
+          color: '#000000',
+        }}
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        autoComplete="current-password"
+        placeholder="パスワード"
+        className="w-full focus:outline-none"
+        style={{
+          background: '#F2F2F7',
+          border: 'none',
+          borderRadius: 10,
+          padding: '14px 16px',
+          fontSize: 15,
+          color: '#000000',
+        }}
+      />
 
-      {/* パスワード row */}
-      <div className="flex items-center px-4" style={{ minHeight: 52 }}>
-        <label style={{ fontSize: 13, color: '#000000', width: 96, flexShrink: 0 }}>
-          パスワード
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-          placeholder="••••••••"
-          className="flex-1 focus:outline-none text-right"
-          style={{ fontSize: 15, color: '#000000', background: 'transparent' }}
-        />
-      </div>
-
-      {/* エラー */}
       {error && (
-        <p className="px-4 pt-3 text-xs text-center" style={{ color: '#FF3B30' }}>
-          {error}
-        </p>
+        <p className="text-xs text-center" style={{ color: '#FF3B30' }}>{error}</p>
       )}
 
-      {/* ログインボタン */}
-      <div className="px-4 pt-4 pb-4">
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full active:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-          style={{
-            background: '#6B5340',
-            color: '#FFFFFF',
-            borderRadius: 12,
-            minHeight: 50,
-            fontWeight: 600,
-            fontSize: 15,
-            border: 'none',
-          }}
-        >
-          {loading ? '読み込み中...' : 'アルバムを開く'}
-        </button>
-      </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full active:opacity-70 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+        style={{
+          background: '#6B5340',
+          color: '#FFFFFF',
+          borderRadius: 10,
+          padding: '14px 16px',
+          fontWeight: 600,
+          fontSize: 15,
+          border: 'none',
+        }}
+      >
+        {loading ? '読み込み中...' : 'アルバムを開く'}
+      </button>
     </form>
   )
 }

@@ -80,32 +80,44 @@ export default function AdminAuthForm() {
         style={{ background: '#FFFFFF' }}
       >
         {/* ユーザー名 */}
-        <div className="flex items-center px-4" style={{ minHeight: 52, borderBottom: '1px solid #F2F2F7' }}>
-          <label className="text-sm w-24 flex-shrink-0" style={{ color: '#000000' }}>ユーザー名</label>
+        <div className="px-4 pt-4 pb-0">
           <input
             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             required
             autoComplete="username"
-            placeholder="username または email"
-            className="flex-1 focus:outline-none text-right text-sm"
-            style={{ color: '#000000', background: 'transparent' }}
+            placeholder="ユーザー名"
+            className="w-full focus:outline-none"
+            style={{
+              background: '#F2F2F7',
+              border: 'none',
+              borderRadius: 10,
+              padding: '14px 16px',
+              fontSize: 15,
+              color: '#000000',
+            }}
           />
         </div>
         {/* パスワード */}
-        <div className="flex items-center px-4" style={{ minHeight: 52 }}>
-          <label className="text-sm w-24 flex-shrink-0" style={{ color: '#000000' }}>パスワード</label>
+        <div className="px-4 pt-3 pb-0">
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
-            placeholder="••••••••"
+            placeholder="パスワード"
             minLength={tab === 'register' ? 8 : undefined}
-            className="flex-1 focus:outline-none text-right text-sm"
-            style={{ color: '#000000', background: 'transparent' }}
+            className="w-full focus:outline-none"
+            style={{
+              background: '#F2F2F7',
+              border: 'none',
+              borderRadius: 10,
+              padding: '14px 16px',
+              fontSize: 15,
+              color: '#000000',
+            }}
           />
         </div>
 
