@@ -581,12 +581,12 @@ function ScrapbookPageSection({
         />
       )}
 
-      {/* 5. ステッカー（写真の上に重ねる） */}
+      {/* 5. ステッカー（150px超は写真の背面、それ以下は前面） */}
       {stickerPlacements.map((s, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img key={`stk-${i}`} src={s.src} alt="" loading="lazy"
           style={{
-            position: 'absolute', zIndex: 11, height: 'auto', pointerEvents: 'none',
+            position: 'absolute', zIndex: s.size > 150 ? 0 : 11, height: 'auto', pointerEvents: 'none',
             top: `${s.top}%`, left: `${s.left}%`, width: s.size,
             transform: `rotate(${s.rotation}deg)`, opacity: s.opacity,
           }}
