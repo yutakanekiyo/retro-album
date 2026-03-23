@@ -71,6 +71,13 @@ export async function createUser(email: string, password: string, displayName: s
   return data.user
 }
 
+export async function changeUserPassword(userId: string, password: string) {
+  await assertAdmin()
+  const admin = createAdminClient()
+  const { error } = await admin.auth.admin.updateUserById(userId, { password })
+  if (error) throw error
+}
+
 export async function updateUsername(userId: string, newUsername: string) {
   await assertAdmin()
   const { usernameToEmail } = await import('@/lib/usernameToEmail')

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import CreateAlbumForm from '@/components/admin/CreateAlbumForm'
+import ChangePasswordForm from '@/components/admin/ChangePasswordForm'
 import PhotoUploader from '@/components/admin/PhotoUploader'
 import AlbumItemList from '@/components/admin/AlbumItemList'
 import AlbumEditForm from '@/components/admin/AlbumEditForm'
@@ -83,6 +84,9 @@ export default async function AlbumManagePage({ params }: Props) {
       <div className="px-1">
         <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>{displayName}</h1>
         <p className="mt-0.5 text-sm" style={{ color: '#8E8E93' }}>{user.email}</p>
+        <div className="mt-2">
+          <ChangePasswordForm userId={userId} />
+        </div>
       </div>
 
       {!album ? (
