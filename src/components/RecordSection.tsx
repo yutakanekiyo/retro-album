@@ -204,13 +204,13 @@ export default function RecordSection({
       {/* メインコンテンツ（レコード + テキスト） zIndex: 10 で最前面 */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center"
-        style={{ gap: 20, zIndex: 10, paddingTop: 16, paddingBottom: '30%' }}
+        style={{ gap: 20, zIndex: 10, paddingTop: 16, paddingBottom: '44%' }}
       >
         {/* レコード盤 */}
         <div
           style={{
-            width: 300,
-            height: 300,
+            width: 240,
+            height: 240,
             borderRadius: '50%',
             background: [
               'radial-gradient(circle at center,',

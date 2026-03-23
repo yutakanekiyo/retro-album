@@ -21,10 +21,13 @@ export default function GalleryView({ items, onPhotoClick }: Props) {
             {item.type === 'video' && !item.thumbnailUrl ? (
               <video
                 src={item.signedUrl}
-                preload="metadata"
+                preload="auto"
                 muted
                 playsInline
                 className="absolute inset-0 h-full w-full object-cover opacity-90"
+                onLoadedMetadata={(e) => {
+                  (e.target as HTMLVideoElement).currentTime = 0.1
+                }}
               />
             ) : (
               <Image
