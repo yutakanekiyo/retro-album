@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import CreateUserForm from '@/components/admin/CreateUserForm'
+import CreateAdminUserForm from '@/components/admin/CreateAdminUserForm'
 import EditUsernameButton from '@/components/admin/EditUsernameButton'
 
 const EMAIL_DOMAIN = '@retro-album.local'
@@ -37,8 +38,11 @@ export default async function AdminPage() {
         <p className="mt-0.5 text-sm" style={{ color: '#8E8E93' }}>{senpaiUsers.length} 人</p>
       </div>
 
-      {/* 新規追加 */}
+      {/* 先輩アカウント追加 */}
       <CreateUserForm />
+
+      {/* 管理者アカウント追加 */}
+      <CreateAdminUserForm />
 
       {/* iOS グループリスト */}
       {senpaiUsers.length === 0 ? (

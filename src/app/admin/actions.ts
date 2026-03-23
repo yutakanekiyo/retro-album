@@ -20,6 +20,28 @@ async function assertAdmin() {
   return user
 }
 
+// ===== 管理者アカウント作成 =====
+
+export async function createAdminUser(email: string, password: string, displayName: string) {
+  await assertAdmin()
+  const admin = createAdminClient()
+
+  // email_confirm: false → Supabase が確認メールを送信する
+  const { data, error } = await admin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: false,
+    user_metadata: { display_name: displayName },
+  })
+  if (error) throw error
+
+  // 確認前に role = 'admin' をセット（確認後すぐログインできるよう）
+  await admin.from('profiles').upsert({ id: data.user.id, display_name: displayName, role: 'admin' })
+
+  revalidatePath('/admin')
+  return data.user
+}
+
 // ===== ユーザー管理 =====
 
 export async function listUsers() {

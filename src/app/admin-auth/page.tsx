@@ -22,10 +22,10 @@ export default async function AdminAuthPage() {
     >
       {/* タイトル */}
       <div className="mb-8 text-center">
-        <h1 className="text-2xl font-bold" style={{ color: '#000000' }}>
-          管理者ポータル
+        <h1 className="font-display text-3xl" style={{ color: '#000000', fontWeight: 500 }}>
+          ようこそ、Replay.へ。
         </h1>
-        <p className="mt-1 text-sm" style={{ color: '#8E8E93' }}>Replay.</p>
+        <p className="mt-1" style={{ fontSize: 14, color: '#3A3A3C', fontWeight: 500 }}>誰かのためのアルバムを作成しましょう。</p>
       </div>
 
       <AdminAuthForm />

@@ -715,7 +715,7 @@ export default function ScrapbookView({ items, onPhotoClick, recordInfo, bgmPlay
               src="/assets/scroll.png" alt="" loading="lazy"
               style={{
                 position: 'absolute', height: 'auto', pointerEvents: 'none',
-                width: 300, bottom: -140, left: '50%',
+                width: 300, bottom: -60, left: '50%',
                 transform: 'translateX(-50%) rotate(-3deg)',
                 opacity: 0.88, zIndex: 30,
               }}

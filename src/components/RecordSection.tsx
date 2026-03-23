@@ -204,7 +204,7 @@ export default function RecordSection({
       {/* メインコンテンツ（レコード + テキスト） zIndex: 10 で最前面 */}
       <div
         className="absolute inset-0 flex flex-col items-center justify-center"
-        style={{ gap: 20, zIndex: 10, paddingTop: 16, paddingBottom: 24 }}
+        style={{ gap: 20, zIndex: 10, paddingTop: 16, paddingBottom: '30%' }}
       >
         {/* レコード盤 */}
         <div

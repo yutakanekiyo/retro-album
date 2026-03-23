@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import AdminPreviewButton from '@/components/admin/AdminPreviewButton'
+import AdminLogoutButton from '@/components/admin/AdminLogoutButton'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -45,7 +46,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             >
               Admin
             </span>
-            <AdminPreviewButton />
+            <div className="flex items-center gap-4">
+              <AdminPreviewButton />
+              <AdminLogoutButton />
+            </div>
           </div>
         </div>
       </header>
