@@ -53,16 +53,26 @@ function CollageIcon() {
 function PlayIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="#2C2420">
-      <polygon points="6,3 19,11 6,19" />
+      {/* 各頂点を二次ベジェで丸めた三角形 */}
+      <path d="M6 4.5 Q6 3 7.3 3.8 L17.7 10.2 Q19 11 17.7 11.8 L7.3 18.2 Q6 19 6 17.5 Z" />
+    </svg>
+  )
+}
+
+function PersonIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#2C2420" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="7" r="4" />
+      <path d="M3 20c0-4 3.6-7 8-7s8 3 8 7" />
     </svg>
   )
 }
 
 function PauseIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#2C2420" strokeWidth="2.2" strokeLinecap="round">
-      <line x1="7"  y1="4" x2="7"  y2="18" />
-      <line x1="15" y1="4" x2="15" y2="18" />
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="#2C2420">
+      <rect x="5.5" y="4" width="3.5" height="14" rx="1.75" />
+      <rect x="13"  y="4" width="3.5" height="14" rx="1.75" />
     </svg>
   )
 }
@@ -90,6 +100,21 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
 
   const initials   = getInitials(displayName)
   const showChrome = fullscreenIndex === null
+
+  function openFullscreen(index: number) {
+    setFullscreenIndex(index)
+    if (items[index]?.type === 'video') {
+      bgmRef.current?.pause()
+    }
+  }
+
+  function closeFullscreen() {
+    const wasVideo = fullscreenIndex !== null && items[fullscreenIndex]?.type === 'video'
+    setFullscreenIndex(null)
+    if (wasVideo) {
+      bgmRef.current?.resume()
+    }
+  }
 
   // ウェルカム画面用: 最初の15枚をプリロード
   const preloadUrls = items
@@ -165,7 +190,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
               >
                 <ScrapbookView
                   items={items}
-                  onPhotoClick={setFullscreenIndex}
+                  onPhotoClick={openFullscreen}
                   recordInfo={recordInfo}
                   bgmPlaying={bgmPlaying}
                 />
@@ -179,7 +204,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.25 }}
               >
-                <GalleryView items={items} onPhotoClick={setFullscreenIndex} />
+                <GalleryView items={items} onPhotoClick={openFullscreen} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -220,18 +245,13 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
             {bgmPlaying ? <PauseIcon /> : <PlayIcon />}
           </button>
 
-          {/* 右: プロフィール（イニシャル） */}
+          {/* 右: プロフィール */}
           <button
             onClick={() => setProfileOpen(true)}
             aria-label="プロフィール"
-            style={{ ...NAV_BTN, background: '#6B5340', border: 'none' }}
+            style={NAV_BTN}
           >
-            <span
-              className="font-ui"
-              style={{ fontSize: 15, fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.02em' }}
-            >
-              {initials}
-            </span>
+            <PersonIcon />
           </button>
         </div>
       )}
@@ -267,13 +287,14 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
                 <div style={{
                   width: 56, height: 56, borderRadius: '50%',
-                  background: '#6B5340',
+                  background: '#F2F2F7',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
                 }}>
-                  <span className="font-ui" style={{ fontSize: 20, fontWeight: 700, color: '#FFFFFF' }}>
-                    {initials}
-                  </span>
+                  <svg width="28" height="28" viewBox="0 0 22 22" fill="none" stroke="#2C2420" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="7" r="4" />
+                    <path d="M3 20c0-4 3.6-7 8-7s8 3 8 7" />
+                  </svg>
                 </div>
                 <div>
                   <p className="font-ui" style={{ fontSize: 17, fontWeight: 600, color: '#000000' }}>
@@ -315,7 +336,7 @@ export default function AlbumPageClient({ items, displayName, bgmSignedUrl, reco
             key={fullscreenIndex}
             items={items}
             initialIndex={fullscreenIndex}
-            onClose={() => setFullscreenIndex(null)}
+            onClose={closeFullscreen}
           />
         )}
       </AnimatePresence>

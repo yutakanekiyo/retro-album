@@ -89,6 +89,43 @@ function HandwrittenDeco({ text, top, left, rotation, isDark }: {
   )
 }
 
+// ─── メディアサムネイル ────────────────────────────────────────────────────────
+function MediaThumb({
+  item, photoFilter, priority, sizes,
+}: {
+  item: AlbumItem
+  photoFilter: string
+  priority?: boolean
+  sizes?: string
+}) {
+  const isVideo = item.type === 'video'
+  // 動画はthumbnailUrl優先、なければvideoタグで最初のフレーム表示
+  if (isVideo && !item.thumbnailUrl) {
+    return (
+      <video
+        src={item.signedUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute', inset: 0,
+          width: '100%', height: '100%',
+          objectFit: 'cover',
+          filter: photoFilter,
+        }}
+      />
+    )
+  }
+  const src = item.thumbnailUrl ?? item.signedUrl
+  return (
+    <Image src={src} alt="" fill
+      className="object-cover" style={{ filter: photoFilter }}
+      sizes={sizes ?? '(max-width: 480px) 60vw, 280px'}
+      priority={priority} />
+  )
+}
+
 // ─── レイアウトパターン ────────────────────────────────────────────────────────
 type PhotoPos = {
   topPct: number; leftPct: number; widthPct: number
@@ -348,10 +385,7 @@ function PhotoCard({
           boxShadow: '3px 5px 16px rgba(0,0,0,0.28), 0 2px 6px rgba(0,0,0,0.14)',
         }}>
           <div className="relative overflow-hidden" style={{ aspectRatio: pos.aspect }}>
-            <Image src={item.thumbnailUrl ?? item.signedUrl} alt={labelText ?? ''} fill
-              className="object-cover" style={{ filter: photoFilter }}
-              sizes="(max-width: 480px) 60vw, 280px"
-              priority={priority} />
+            <MediaThumb item={item} photoFilter={photoFilter} priority={priority} />
             {hasVignette && (
               <div className="pointer-events-none absolute inset-0"
                 style={{ background: 'radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,0.3) 100%)' }} />
@@ -368,10 +402,7 @@ function PhotoCard({
         </div>
       ) : (
         <div className="relative overflow-hidden" style={{ aspectRatio: pos.aspect, boxShadow }}>
-          <Image src={item.thumbnailUrl ?? item.signedUrl} alt={labelText ?? ''} fill
-            className="object-cover" style={{ filter: photoFilter }}
-            sizes="(max-width: 480px) 60vw, 280px"
-            priority={priority} />
+          <MediaThumb item={item} photoFilter={photoFilter} priority={priority} />
           {hasVignette && (
             <div className="pointer-events-none absolute inset-0"
               style={{ background: 'radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,0.3) 100%)' }} />

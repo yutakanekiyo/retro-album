@@ -18,13 +18,23 @@ export default function GalleryView({ items, onPhotoClick }: Props) {
             onClick={() => onPhotoClick(index)}
             className="relative aspect-square overflow-hidden bg-[#F2F2F7] focus:outline-none"
           >
-            <Image
-              src={item.thumbnailUrl ?? item.signedUrl}
-              alt={item.caption ?? `Photo ${index + 1}`}
-              fill
-              className="object-cover opacity-90 transition-opacity hover:opacity-100"
-              sizes="33vw"
-            />
+            {item.type === 'video' && !item.thumbnailUrl ? (
+              <video
+                src={item.signedUrl}
+                preload="metadata"
+                muted
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover opacity-90"
+              />
+            ) : (
+              <Image
+                src={item.thumbnailUrl ?? item.signedUrl}
+                alt={item.caption ?? `Photo ${index + 1}`}
+                fill
+                className="object-cover opacity-90 transition-opacity hover:opacity-100"
+                sizes="33vw"
+              />
+            )}
             {item.type === 'video' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                 <span className="text-white/80 text-xl drop-shadow">▶</span>

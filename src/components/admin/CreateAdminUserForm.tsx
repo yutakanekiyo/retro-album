@@ -99,8 +99,8 @@ export default function CreateAdminUserForm() {
               name="password"
               type="text"
               required
-              minLength={8}
-              placeholder="8文字以上"
+              minLength={6}
+              placeholder="6文字以上"
               className="flex-1 focus:outline-none text-right text-sm"
               style={{ color: '#000000', background: 'transparent' }}
             />

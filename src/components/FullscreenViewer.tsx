@@ -1,9 +1,29 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import type { AlbumItem } from './AlbumViewer'
+
+function VideoPlayer({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    ref.current?.play().catch(() => {})
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      controls
+      playsInline
+      autoPlay
+      className="max-h-full max-w-full"
+      style={{ filter: 'sepia(8%) contrast(1.05)' }}
+    />
+  )
+}
 
 type Props = {
   items: AlbumItem[]
@@ -83,13 +103,7 @@ export default function FullscreenViewer({ items, initialIndex, onClose }: Props
             className="absolute inset-0 flex items-center justify-center touch-pan-y cursor-grab active:cursor-grabbing"
           >
             {item.type === 'video' ? (
-              <video
-                src={item.signedUrl}
-                controls
-                playsInline
-                className="max-h-full max-w-full"
-                style={{ filter: 'sepia(8%) contrast(1.05)' }}
-              />
+              <VideoPlayer src={item.signedUrl} />
             ) : (
               <div className="relative h-full w-full photo-grain">
                 <Image

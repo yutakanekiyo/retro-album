@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 're
 
 export interface BgmPlayerHandle {
   toggle: () => void
+  pause: () => void
+  resume: () => void
 }
 
 type Props = {
@@ -39,7 +41,25 @@ const BgmPlayer = forwardRef<BgmPlayerHandle, Props>(function BgmPlayer({ src, o
     }
   }
 
-  useImperativeHandle(ref, () => ({ toggle: togglePlay }))
+  function pauseBgm() {
+    const audio = audioRef.current
+    if (!audio || !playingRef.current) return
+    audio.pause()
+    updatePlaying(false)
+  }
+
+  async function resumeBgm() {
+    const audio = audioRef.current
+    if (!audio || playingRef.current) return
+    try {
+      await audio.play()
+      updatePlaying(true)
+    } catch {
+      // autoplay blocked
+    }
+  }
+
+  useImperativeHandle(ref, () => ({ toggle: togglePlay, pause: pauseBgm, resume: resumeBgm }))
 
   return <audio ref={audioRef} src={src} loop preload="auto" />
 })
